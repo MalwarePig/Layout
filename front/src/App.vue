@@ -12,15 +12,21 @@ import TabsBar from './components/Layout/TabsBar/TabsBar.vue'
     </div>
 
     <div class="main-container">
-      <Sidebar />
-      <Main />
+      <div class="sidebar-wrapper">
+        <Sidebar />
+      </div>
+
+      <div class="main-wrapper">
+        <Main />
+      </div>
     </div>
 
   </div>
 </template>
 
 <style>
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -37,6 +43,10 @@ html, body {
 .header {
   width: 100%;
   flex-shrink: 0;
+}
+
+.sidebar-wrapper {
+  width: 200px;
 }
 
 .main-container {

@@ -1,5 +1,324 @@
-:root {
+/* ============================================================
+   CRM Design System — Color Tokens
+   Modos: light y dark
+   Uso: importa este archivo en tu proyecto y usa las variables
+   en tus componentes o clases de utilidad.
+   ============================================================ */
 
+:root,
+[data-theme="light"] {
+
+  /* --- Backgrounds --- */
+  --color-bg-page: #f4f3f8;
+  /* Fondo general de la app */
+  --color-bg-surface: #FFFFFF;
+  /* Cards, panels, modales */
+  --color-bg-sidebar: #EAE6FF;
+  /* Navegación lateral */
+  --color-bg-elevated: #F8F6FF;
+  /* Dropdowns, tooltips */
+
+  /* --- Bordes --- */
+  --color-border-default: #D6D0FF;
+  --color-border-strong: #B8B0F0;
+
+  /* --- Textos --- */
+  --color-text-primary: #0D0826;
+  /* Títulos, datos clave */
+  --color-text-secondary: #5A5280;
+  /* Labels, subtítulos */
+  --color-text-tertiary: #9690B8;
+  /* Placeholders, hints */
+  --color-text-disabled: #C4C0DC;
+
+  /* --- Acción principal (Naranja CTA) --- */
+  --color-action-default: #F26419;
+  --color-action-hover: #D45410;
+  --color-action-text: #FFFFFF;
+
+  /* --- Acento (Violeta) --- */
+  --color-accent-default: #5C3FD4;
+  --color-accent-hover: #4A30B8;
+  --color-accent-text: #FFFFFF;
+  --color-accent-subtle: #EAE6FF;
+  /* Fondo de botón outline */
+
+  /* --- Estado: Aceptar / Éxito --- */
+  --color-success-default: #00C853;
+  --color-success-hover: #00A844;
+  --color-success-text: #002A12;
+  --color-success-subtle: #D6FFF0;
+  /* Badge / fondo suave */
+  --color-success-border: #00C853;
+
+  /* --- Estado: Advertencia --- */
+  --color-warning-default: #FF6D00;
+  --color-warning-hover: #E05E00;
+  --color-warning-text: #FFFFFF;
+  --color-warning-subtle: #FFF0E0;
+  --color-warning-border: #FF6D00;
+
+  /* --- Estado: Cancelar / Peligro --- */
+  --color-danger-default: #D50000;
+  --color-danger-hover: #B00000;
+  --color-danger-text: #FFFFFF;
+  --color-danger-subtle: #FFE5E5;
+  --color-danger-border: #D50000;
+
+}
+
+[data-theme="dark"] {
+
+  /* --- Backgrounds --- */
+  --color-bg-page: #0D0D14;
+  /* Fondo general de la app */
+  --color-bg-surface: #16162A;
+  /* Cards, panels */
+  --color-bg-sidebar: #12121F;
+  /* Navegación lateral */
+  --color-bg-elevated: #1E1E38;
+  /* Modales, dropdowns */
+
+  /* --- Bordes --- */
+  --color-border-default: #2A2A4A;
+  --color-border-strong: #3C3C60;
+
+  /* --- Textos --- */
+  --color-text-primary: #F0F0FF;
+  --color-text-secondary: #B0B0D0;
+  --color-text-tertiary: #8080B0;
+  --color-text-disabled: #3C3C60;
+
+  /* --- Acción principal (Naranja CTA) --- */
+  --color-action-default: #F26419;
+  --color-action-hover: #D45410;
+  --color-action-text: #FFFFFF;
+
+  /* --- Acento (Violeta) --- */
+  --color-accent-default: #A78BFA;
+  --color-accent-hover: #C4ADFF;
+  --color-accent-text: #0D0826;
+  --color-accent-subtle: #1E1E38;
+
+  /* --- Estado: Aceptar / Éxito --- */
+  --color-success-default: #00E676;
+  --color-success-hover: #00C853;
+  --color-success-text: #003318;
+  --color-success-subtle: #003D1F;
+  --color-success-border: #00E676;
+
+  /* --- Estado: Advertencia --- */
+  --color-warning-default: #FF9100;
+  --color-warning-hover: #E07A00;
+  --color-warning-text: #3D2000;
+  --color-warning-subtle: #3D2000;
+  --color-warning-border: #FF9100;
+
+  /* --- Estado: Cancelar / Peligro --- */
+  --color-danger-default: #FF1744;
+  --color-danger-hover: #E0102E;
+  --color-danger-text: #FFFFFF;
+  --color-danger-subtle: #3D0010;
+  --color-danger-border: #FF1744;
+
+}
+
+
+/* ============================================================
+   CLASES DE UTILIDAD — botones
+   ============================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn-primary {
+  background: var(--color-action-default);
+  color: var(--color-action-text);
+}
+
+.btn-primary:hover {
+  background: var(--color-action-hover);
+}
+
+.btn-accent {
+  background: var(--color-accent-default);
+  color: var(--color-accent-text);
+}
+
+.btn-accent:hover {
+  background: var(--color-accent-hover);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--color-accent-default);
+  border: 1.5px solid var(--color-accent-default);
+}
+
+.btn-outline:hover {
+  background: var(--color-accent-subtle);
+}
+
+.btn-success {
+  background: var(--color-success-default);
+  color: var(--color-success-text);
+}
+
+.btn-success:hover {
+  background: var(--color-success-hover);
+}
+
+.btn-warning {
+  background: var(--color-warning-default);
+  color: var(--color-warning-text);
+}
+
+.btn-warning:hover {
+  background: var(--color-warning-hover);
+}
+
+.btn-danger {
+  background: var(--color-danger-default);
+  color: var(--color-danger-text);
+}
+
+.btn-danger:hover {
+  background: var(--color-danger-hover);
+}
+
+
+/* ============================================================
+   CLASES DE UTILIDAD — badges / tags
+   ============================================================ */
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid transparent;
+}
+
+.badge-success {
+  background: var(--color-success-subtle);
+  color: var(--color-success-default);
+  border-color: var(--color-success-border);
+}
+
+.badge-warning {
+  background: var(--color-warning-subtle);
+  color: var(--color-warning-default);
+  border-color: var(--color-warning-border);
+}
+
+.badge-danger {
+  background: var(--color-danger-subtle);
+  color: var(--color-danger-default);
+  border-color: var(--color-danger-border);
+}
+
+
+/* ============================================================
+   CLASES DE UTILIDAD — layout base
+   ============================================================ */
+
+.crm-page {
+  background: var(--color-bg-page);
+  min-height: 100vh;
+}
+
+.crm-sidebar {
+  background: var(--color-bg-sidebar);
+}
+
+.crm-card {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: 10px;
+  padding: 16px 20px;
+}
+
+.text-primary {
+  color: var(--color-text-primary);
+}
+
+.text-secondary {
+  color: var(--color-text-secondary);
+}
+
+.text-tertiary {
+  color: var(--color-text-tertiary);
+}
+
+
+/* ============================================================
+   ACTIVAR MODO DARK AUTOMÁTICAMENTE (opcional)
+   Comenta este bloque si prefieres controlarlo
+   solo con data-theme="dark"
+   ============================================================ */
+
+@media (
+  /* prefers-color-scheme: dark */
+) {
+  :root {
+
+    --color-bg-page: #0D0D14;
+    --color-bg-surface: #16162A;
+    --color-bg-sidebar: #12121F;
+    --color-bg-elevated: #1E1E38;
+
+    --color-border-default: #2A2A4A;
+    --color-border-strong: #3C3C60;
+
+    --color-text-primary: #F0F0FF;
+    --color-text-secondary: #B0B0D0;
+    --color-text-tertiary: #8080B0;
+    --color-text-disabled: #3C3C60;
+
+    --color-action-default: #F26419;
+    --color-action-hover: #D45410;
+    --color-action-text: #FFFFFF;
+
+    --color-accent-default: #A78BFA;
+    --color-accent-hover: #C4ADFF;
+    --color-accent-text: #0D0826;
+    --color-accent-subtle: #1E1E38;
+
+    --color-success-default: #00E676;
+    --color-success-hover: #00C853;
+    --color-success-text: #003318;
+    --color-success-subtle: #003D1F;
+    --color-success-border: #00E676;
+
+    --color-warning-default: #FF9100;
+    --color-warning-hover: #E07A00;
+    --color-warning-text: #3D2000;
+    --color-warning-subtle: #3D2000;
+    --color-warning-border: #FF9100;
+
+    --color-danger-default: #FF1744;
+    --color-danger-hover: #E0102E;
+    --color-danger-text: #FFFFFF;
+    --color-danger-subtle: #3D0010;
+    --color-danger-border: #FF1744;
+
+  }
 }
 
 body {
@@ -7,5 +326,5 @@ body {
   padding: 0;
   height: 100vh;
   width: 100vw;
-  background-color: red;
+  background: var(--color-bg-surface);
 }
