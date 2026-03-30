@@ -56,11 +56,6 @@ function closeTab(tabId) {
 
         <div class="actions">
             <button class="btn btn-outline" style="min-width: 100px;">Ajustes</button>
-            <button class="btn btn-primary" style="min-width: 120px;">Nueva Acción</button>
-
-            <div class="user-avatar" title="Perfil de Usuario">
-                <span>GA</span>
-            </div>
         </div>
     </div>
 </template>
