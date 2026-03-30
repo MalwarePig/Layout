@@ -1,44 +1,60 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, defineProps, watch } from 'vue';
+import { Plus, X } from 'lucide-vue-next';
 
 const activeTab = ref(1);
 
-const tabs = ref([
-    { id: 1, name: 'Inicio' },
-    { id: 2, name: 'Clientes' },
-    { id: 3, name: 'Ventas' },
-    { id: 4, name: 'Reportes' },
-    { id: 5, name: 'Inicio' },
-    { id: 6, name: 'Clientes' },
-    { id: 7, name: 'Ventas' },
-    { id: 8, name: 'Reportes' },
-]);
+const props = defineProps({
+    listTabs: {
+        type: Array,
+        default: () => []
+    }
+});
+
+watch(() => props.listTabs.length, (newLen, oldLen) => {
+    // PROTECCIÓN CONTRA CRASH: Solo modificamos si la nueva longitud es válida.
+    if (newLen > 0 && newLen > oldLen) {
+        activeTab.value = props.listTabs[newLen - 1].id;
+    } else if (newLen === 0) {
+        activeTab.value = 1;
+    }
+});
+
+const emit = defineEmits(['closeTab']);
+
+function closeTab(tabId) {
+    // IMPORTANTE: Quité el activeTab aquí porque rompía la reactividad al sincronizar.
+    // Solo debes avisarle al papá (App.vue -> useTabs) que lo borre.
+    emit('closeTab', tabId);
+}
+
 </script>
 
 <template>
     <div class="tabs-bar">
-        <!-- Logo Alineado a la Izquierda -->
         <div class="logo">
             <img src="../../../../public/logo/Logo.svg" alt="Logo">
         </div>
 
-        <!-- Tabs Centradas (Estilo Segmented Control Profesional) -->
         <div class="tabs-wrapper">
             <div class="tabs-container">
-                <button
-                        class="tab"
-                        v-for="tab in tabs"
-                        :key="tab.id"
-                        :class="{ 'active': activeTab === tab.id }"
-                        @click="activeTab = tab.id">
-                    {{ tab.name }}
+
+                <button class="tab" v-for="tab in props.listTabs" :key="tab.id"
+                    :class="{ 'active': activeTab === tab.id }" @click="activeTab = tab.id">
+                    <span>{{ tab.name }}</span>
+                    <component class="close-tab" :is="X" :size="16" :stroke-width="2.5" v-if="activeTab === tab.id"
+                        @click="closeTab(tab.id)" />
+                </button>
+
+                <!-- Default -->
+                <button class="tab" :key="1" v-if="props.listTabs.length === 0" :class="{ 'active': activeTab === 1 }"
+                    @click="activeTab = 1">
+                    <component :is="Plus" :size="18" :stroke-width="2" />
                 </button>
             </div>
         </div>
 
-        <!-- Acciones a la Derecha -->
         <div class="actions">
-            <!-- Empleando las increíbles clases de utilidad de tu style.css -->
             <button class="btn btn-outline" style="min-width: 100px;">Ajustes</button>
             <button class="btn btn-primary" style="min-width: 120px;">Nueva Acción</button>
 
@@ -59,7 +75,6 @@ const tabs = ref([
     width: 100%;
     padding: 0 30px;
     box-sizing: border-box;
-    /* Sombras profesionales que aportan profundidad y separan el top bar del contenido */
     box-shadow: 0 4px 25px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
     border-bottom: 1px solid var(--color-border-default);
     position: relative;
@@ -71,7 +86,6 @@ const tabs = ref([
     align-items: center;
     gap: 12px;
     min-width: 250px;
-    /* Balancea el layout vs panel derecho */
 }
 
 img {
@@ -83,29 +97,30 @@ img {
     flex-grow: 1;
     display: flex;
     justify-content: center;
-    /* Centra el contenedor de las pestañas magnéticamente */
 }
 
-/* Cuna contenedora gris para alojar las píldoras con profundidad */
 .tabs-container {
     display: flex;
     align-items: center;
     background-color: var(--color-bg-page);
-    /* Fonde tenue del Design System */
     padding: 6px;
     border-radius: 12px;
-    gap: 6px;
+    gap: 5px;
     box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.03);
-    /* Sombra interna para crear hundimiento sutil */
     border: 1px solid var(--color-border-default);
 }
 
-/* Default Tab state */
 .tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    /* Controla el espacio perfecto entre texto y la X */
     background: transparent;
     border: none;
     height: 42px;
-    padding: 0 26px;
+    padding: 0 20px;
+    /* Un poco menos de padding porque el gap ya da espacio */
     cursor: pointer;
     font-size: 0.95rem;
     font-weight: 500;
@@ -117,21 +132,15 @@ img {
 .tab:hover:not(.active) {
     color: var(--color-text-primary);
     background-color: rgba(92, 63, 212, 0.05);
-    /* Rastro sutil lila al hacer hover */
 }
 
-/* ACTIVE TAB PÍLDORA FLOTANTE */
 .tab.active {
     background-color: var(--color-bg-surface);
-    /* Extrae la píldora al nivel de la superficie */
     color: var(--color-accent-default);
-    /* Resalta el texto con tu acento Violeta CRM */
     font-weight: 600;
-    /* Sombras 3D en capas: una mancha púrpura difusa (glow) y otra nítida de elevación */
     box-shadow: 0 4px 14px rgba(92, 63, 212, 0.12), 0 1px 4px rgba(0, 0, 0, 0.06);
     border: 1px solid var(--color-border-default);
     transform: translateY(-1px);
-    /* Efecto material de elevación visible */
 }
 
 .actions {
@@ -142,12 +151,10 @@ img {
     justify-content: flex-end;
 }
 
-/* Avatar de Perfil Estilo Gradiente */
 .user-avatar {
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    /* Utiliza tu naranja principal y warning para un vibrante degradado premium */
     background: linear-gradient(135deg, var(--color-action-default), var(--color-warning-default));
     display: flex;
     align-items: center;
@@ -156,7 +163,6 @@ img {
     font-weight: bold;
     font-size: 1rem;
     letter-spacing: 1px;
-    /* Glow Naranja similar a Stripe */
     box-shadow: 0 4px 12px rgba(242, 100, 25, 0.3);
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -166,5 +172,29 @@ img {
 .user-avatar:hover {
     transform: scale(1.05);
     box-shadow: 0 6px 16px rgba(242, 100, 25, 0.4);
+}
+
+.icon {
+    font-size: 1.4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 32px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.close-tab {
+    margin-left: 0;
+    opacity: 0.6;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+    padding: 2px;
+    /* Un poquito de aire interno si deciden hacerlo clickeable después */
+}
+
+.close-tab:hover {
+    opacity: 1;
+    color: var(--color-danger-default);
+    background-color: var(--color-danger-subtle);
 }
 </style>

@@ -1,5 +1,22 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, defineEmits } from 'vue';
+import {
+    House,
+    LayoutDashboard,
+    Package,
+    Wrench,
+    Award,
+    Factory,
+    TrendingUp,
+    ShoppingCart,
+    CircleDollarSign,
+    Hammer,
+    FileText,
+    Users,
+    Settings,
+    ChevronRight
+} from 'lucide-vue-next';
+
 
 const isExpanded = ref(false);
 
@@ -7,19 +24,26 @@ const toggleSidebar = () => {
     isExpanded.value = !isExpanded.value;
 };
 
+const emit = defineEmits(['addTab'])
+
+function Tabs(item) {
+    emit('addTab', item.name);
+}
+
 const menuItems = ref([
-    { id: 1, name: 'Dashboard', icon: '📊', isSubmenuOpen: false },
-    { id: 2, name: 'Almacenes', icon: '📦', isSubmenuOpen: false, subItems: ['Principal', 'Secundario'] },
-    { id: 3, name: 'Herramientas', icon: '🛠️', isSubmenuOpen: false },
-    { id: 4, name: 'Calidad', icon: '✨', isSubmenuOpen: false },
-    { id: 5, name: 'Producción', icon: '🏭', isSubmenuOpen: false, subItems: ['Línea 1', 'Línea 2'] },
-    { id: 6, name: 'Ventas', icon: '📈', isSubmenuOpen: false },
-    { id: 7, name: 'Compras', icon: '🛒', isSubmenuOpen: false },
-    { id: 8, name: 'Finanzas', icon: '💰', isSubmenuOpen: false },
-    { id: 9, name: 'Mantenimiento', icon: '🔧', isSubmenuOpen: false },
-    { id: 10, name: 'Reportes', icon: '📄', isSubmenuOpen: false },
-    { id: 11, name: 'RH', icon: '👥', isSubmenuOpen: false },
-    { id: 12, name: 'Configuración', icon: '⚙️', isSubmenuOpen: false, subItems: ['General', 'Usuarios', 'Permisos'] }
+    { id: 0, name: 'Home', icon: House, isSubmenuOpen: false },
+    { id: 1, name: 'Dashboard', icon: LayoutDashboard, isSubmenuOpen: false },
+    { id: 2, name: 'Almacen', icon: Package, isSubmenuOpen: false, subItems: ['Entradas', 'Salidas'] },
+    { id: 3, name: 'Herramientas', icon: Wrench, isSubmenuOpen: false },
+    { id: 4, name: 'Calidad', icon: Award, isSubmenuOpen: false },
+    { id: 5, name: 'Producción', icon: Factory, isSubmenuOpen: false, subItems: ['Línea 1', 'Línea 2'] },
+    { id: 6, name: 'Ventas', icon: TrendingUp, isSubmenuOpen: false },
+    { id: 7, name: 'Compras', icon: ShoppingCart, isSubmenuOpen: false },
+    { id: 8, name: 'Finanzas', icon: CircleDollarSign, isSubmenuOpen: false },
+    { id: 9, name: 'Mantenimiento', icon: Hammer, isSubmenuOpen: false },
+    { id: 10, name: 'Reportes', icon: FileText, isSubmenuOpen: false },
+    { id: 11, name: 'RH', icon: Users, isSubmenuOpen: false },
+    { id: 12, name: 'Configuración', icon: Settings, isSubmenuOpen: false, subItems: ['General', 'Usuarios', 'Permisos'] }
 ]);
 
 const toggleSubmenu = (item) => {
@@ -30,6 +54,7 @@ const toggleSubmenu = (item) => {
 <template>
     <div class="sidebar-container" :class="{ 'expanded': isExpanded }">
         <div class="mac-dock">
+            <!-- Botón Hamburguesa: Alimenta isExpanded -->
             <button class="hamburger" @click="toggleSidebar" :aria-expanded="isExpanded">
                 <span class="bar top-bar" :class="{ 'open': isExpanded }"></span>
                 <span class="bar mid-bar" :class="{ 'open': isExpanded }"></span>
@@ -38,37 +63,39 @@ const toggleSubmenu = (item) => {
 
             <nav class="nav-menu">
                 <ul class="menu-list">
-                    <li v-for="item in menuItems" :key="item.id" class="menu-item-container">
+                    <li v-for="item in menuItems" :key="item.id" class="menu-item-container" @click="Tabs(item)">
 
-                        <div class="menu-item"
-                             @click="item.subItems ? toggleSubmenu(item) : null"
-                             :title="!isExpanded ? item.name : ''">
-
-                            <span class="icon">{{ item.icon }}</span>
+                        <div class="menu-item" @click="item.subItems ? toggleSubmenu(item) : null"
+                            :title="!isExpanded ? item.name : ''">
+                            <span class="icon">
+                                <component :is="item.icon" :size="20" :stroke-width="1.5" />
+                            </span>
 
                             <transition name="fade">
                                 <span class="label" v-show="isExpanded">{{ item.name }}</span>
                             </transition>
 
-                            <span v-if="item.subItems && isExpanded"
-                                  class="chevron"
-                                  :class="{ 'open': item.isSubmenuOpen }">
-                                ▶
+                            <span v-if="item.subItems && isExpanded" class="chevron"
+                                :class="{ 'open': item.isSubmenuOpen }">
+                                <ChevronRight :size="16" :stroke-width="2" />
                             </span>
                         </div>
 
-                        <ul v-if="item.subItems"
-                            class="submenu"
-                            :class="{ 'open': item.isSubmenuOpen }">
-
+                        <ul v-if="item.subItems" class="submenu" :class="{ 'open': item.isSubmenuOpen }">
                             <li v-if="!isExpanded" class="submenu-title">{{ item.name }}</li>
-
                             <li v-for="(subItem, index) in item.subItems" :key="index" class="submenu-item">
                                 {{ subItem }}
                             </li>
                         </ul>
 
                     </li>
+                </ul>
+
+                <ul>
+                    <li><router-link to="/">Home</router-link></li>
+                    <li><router-link to="/about">About</router-link></li>
+                    <li><router-link to="/contact">Contact</router-link></li>
+                    <li><router-link to="/about">About</router-link></li>
                 </ul>
             </nav>
         </div>
@@ -84,6 +111,8 @@ const toggleSubmenu = (item) => {
     z-index: 1000;
     box-sizing: border-box;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+    border-bottom: 1px solid var(--color-border-default);
 }
 
 .mac-dock {
@@ -91,13 +120,13 @@ const toggleSubmenu = (item) => {
     top: 0;
     left: 0;
     bottom: 0;
-
     background: var(--color-bg-page);
     backdrop-filter: blur(20px) saturate(150%);
     -webkit-backdrop-filter: blur(20px) saturate(150%);
     border-right: 1px solid rgba(200, 200, 200, 0.4);
     border-radius: 0;
-    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
+    border-right: 1px solid var(--color-border-default);
 
     display: flex;
     flex-direction: column;
@@ -108,10 +137,8 @@ const toggleSubmenu = (item) => {
 
     transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
     box-sizing: border-box;
-    /* Removido el overflow hidden para permitir que el flyout rebase sin cortarse! */
 }
 
-/* Expansión del dock */
 .sidebar-container.expanded .mac-dock {
     width: 200px;
 }
@@ -126,7 +153,6 @@ const toggleSubmenu = (item) => {
     height: 18px;
     width: 22px;
     margin: 5px 0 30px 19px;
-    /* Anclado siempre a 19px de la izquierda (centro matemático de 80px) */
     padding: 0;
     z-index: 10;
     transition: all 0.3s ease;
@@ -175,14 +201,12 @@ const toggleSubmenu = (item) => {
     flex-direction: column;
     flex-shrink: 0;
     position: relative;
-    /* Clave absoluta para el anclaje del flyout */
 }
 
 .menu-item {
     display: flex;
     align-items: center;
     padding: 12px 14px;
-    /* Anclaje matemático: 14px asegura que del min-width 32px su centro caiga exacto en 40px del dock colapsado */
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
@@ -190,22 +214,20 @@ const toggleSubmenu = (item) => {
     box-sizing: border-box;
     position: relative;
     justify-content: flex-start;
-    /* Siempre left flex-start para evitar rebotes! */
     overflow: hidden;
-    /* Evita expansiones de caja temporal al colapsar */
     white-space: nowrap;
-    /* Evita que el texto envuelva y rompa la animación */
+    border: 1px solid transparent;
 }
 
 .menu-item:hover {
-    background: #ffffff;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    transform: scale(1.05);
+    background-color: var(--color-bg-surface);
+    color: var(--color-accent-default);
+    box-shadow: 0 4px 14px rgba(92, 63, 212, 0.12), 0 1px 4px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--color-border-default);
     z-index: 2;
 }
 
 .sidebar-container.expanded .menu-item:hover {
-    transform: translateX(4px);
     background: rgba(255, 255, 255, 0.9);
 }
 
@@ -252,7 +274,7 @@ const toggleSubmenu = (item) => {
     transform: translateX(-10px);
 }
 
-/* FLYOUT SUBMENU STYLING */
+
 .submenu {
     list-style: none;
     padding: 8px 0;
@@ -261,16 +283,13 @@ const toggleSubmenu = (item) => {
     position: absolute;
     top: 0;
     left: 100%;
-    /* Totalmente a la derecha del menu-item-container */
     margin-left: 2px;
-    /* Separación estética */
 
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px) saturate(200%);
-    -webkit-backdrop-filter: blur(20px) saturate(200%);
-    border: 1px solid rgba(200, 200, 200, 0.4);
+
+    background-color: var(--color-bg-surface);
+    box-shadow: 0 4px 14px rgba(92, 63, 212, 0.12), 0 1px 4px rgba(0, 0, 0, 0.06);
+    border: 1px solid var(--color-border-default);
     border-radius: 8px;
-    box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.08);
     min-width: 170px;
     z-index: 2000;
 
@@ -280,7 +299,7 @@ const toggleSubmenu = (item) => {
     transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* Aparece al hacer hover sobre todo el item, o si se hace click (.open) */
+
 .menu-item-container:hover .submenu,
 .submenu.open {
     opacity: 1;
@@ -312,6 +331,5 @@ const toggleSubmenu = (item) => {
     background-color: rgba(0, 0, 0, 0.04);
     color: #000;
     padding-left: 22px;
-    /* Efecto dinámico hacia la derecha al hover */
 }
 </style>
