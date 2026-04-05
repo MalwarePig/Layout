@@ -1,2 +1,5 @@
 /*lucide icons*/
 npm install lucide-vue-next
+
+/*vue router*/
+npm install vue-router

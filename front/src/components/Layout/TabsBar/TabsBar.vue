@@ -12,7 +12,6 @@ const props = defineProps({
 });
 
 watch(() => props.listTabs.length, (newLen, oldLen) => {
-    // PROTECCIÓN CONTRA CRASH: Solo modificamos si la nueva longitud es válida.
     if (newLen > 0 && newLen > oldLen) {
         activeTab.value = props.listTabs[newLen - 1].id;
     } else if (newLen === 0) {
@@ -20,12 +19,17 @@ watch(() => props.listTabs.length, (newLen, oldLen) => {
     }
 });
 
-const emit = defineEmits(['closeTab']);
+const emit = defineEmits(['setCloseTab', 'setActiveTab']);
 
 function closeTab(tabId) {
-    // IMPORTANTE: Quité el activeTab aquí porque rompía la reactividad al sincronizar.
-    // Solo debes avisarle al papá (App.vue -> useTabs) que lo borre.
-    emit('closeTab', tabId);
+    activeTab.value = 1;
+    emit('setCloseTab', tabId);
+
+}
+
+function setActiveTab(tabId, tabName) {
+    activeTab.value = tabId;
+    emit('setActiveTab', tabName);
 }
 
 </script>
@@ -40,7 +44,7 @@ function closeTab(tabId) {
             <div class="tabs-container">
 
                 <button class="tab" v-for="tab in props.listTabs" :key="tab.id"
-                    :class="{ 'active': activeTab === tab.id }" @click="activeTab = tab.id">
+                    :class="{ 'active': activeTab === tab.id }" @click="setActiveTab(tab.id, tab.name)">
                     <span>{{ tab.name }}</span>
                     <component class="close-tab" :is="X" :size="16" :stroke-width="2.5" v-if="activeTab === tab.id"
                         @click="closeTab(tab.id)" />

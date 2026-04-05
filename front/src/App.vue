@@ -1,33 +1,5 @@
-<script setup>
-import Main from './components/Layout/Main/Main.vue'
-import Sidebar from './components/Layout/Sidebar/Sidebar.vue'
-import TabsBar from './components/Layout/TabsBar/TabsBar.vue'
-
-/* TABS */
-import { useTabs } from './composables/useTabs'
-const { tabs, addTab, closeTab, currentPage } = useTabs();
-
-/* PAGES */
-
-</script>
-
 <template>
-  <div class="app">
-    <div class="header">
-      <TabsBar :listTabs="tabs" @closeTab="closeTab" />
-    </div>
-
-    <div class="main-container">
-      <div class="sidebar-wrapper">
-        <Sidebar @addTab="addTab" />
-      </div>
-
-      <div class="main-wrapper">
-        <component :is="currentPage" />
-      </div>
-    </div>
-
-  </div>
+  <router-view></router-view>
 </template>
 
 <style>
@@ -36,30 +8,5 @@ body {
   margin: 0;
   padding: 0;
   height: 100%;
-}
-
-.app {
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.header {
-  width: 100%;
-  flex-shrink: 0;
-}
-
-.sidebar-wrapper {
-  width: 200px;
-}
-
-.main-container {
-  display: flex;
-  justify-content: start;
-  align-items: stretch;
-  flex-grow: 1;
-  overflow: hidden;
 }
 </style>

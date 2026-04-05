@@ -1,11 +1,10 @@
 import { ref, shallowRef, defineAsyncComponent } from "vue";
 import Home from "../components/Pages/Home/Home.vue";
 
-const tabs = ref([]);
 let nextTabId = 1;
 const currentPage = shallowRef(Home);
-
-// Mapeo de componentes (puedes usar defineAsyncComponent para carga diferida)
+const tabs = ref([{ id: nextTabId++, name: "Home" }]);
+// Mapeo de componentes
 const componentsMap = {
   Home,
   Almacen: defineAsyncComponent(
@@ -16,6 +15,28 @@ const componentsMap = {
   ),
   Calidad: defineAsyncComponent(
     () => import("../components/Pages/Calidad/Calidad.vue"),
+  ),
+  Compras: defineAsyncComponent(
+    () => import("../components/Pages/Compras/Compras.vue"),
+  ),
+  Finanzas: defineAsyncComponent(
+    () => import("../components/Pages/Finanzas/Finanzas.vue"),
+  ),
+  Herramientas: defineAsyncComponent(
+    () => import("../components/Pages/Herramientas/Herramientas.vue"),
+  ),
+  Mantenimiento: defineAsyncComponent(
+    () => import("../components/Pages/Mantenimiento/Mantenimiento.vue"),
+  ),
+  Producción: defineAsyncComponent(
+    () => import("../components/Pages/Produccion/Produccion.vue"),
+  ),
+  Reportes: defineAsyncComponent(
+    () => import("../components/Pages/Reportes/Reportes.vue"),
+  ),
+  RH: defineAsyncComponent(() => import("../components/Pages/RH/RH.vue")),
+  Ventas: defineAsyncComponent(
+    () => import("../components/Pages/Ventas/Ventas.vue"),
   ),
 };
 
@@ -40,10 +61,15 @@ export function useTabs() {
     }
   }
 
+  function activeTab(tabName) {
+    currentPage.value = componentsMap[tabName] || Home;
+  }
+
   return {
     tabs,
     addTab,
     closeTab,
     currentPage,
+    activeTab,
   };
 }
