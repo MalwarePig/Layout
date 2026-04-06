@@ -57,6 +57,6 @@ const { tabs, addTab, closeTab, currentPage, activeTab } = useTabs();
   flex-grow: 1;
   overflow: auto;
   padding: 20px;
-  background: var(--color-bg-page);
+  background: var(--color-bg-surface);
 }
 </style>

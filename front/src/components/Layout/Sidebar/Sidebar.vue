@@ -14,7 +14,9 @@ import {
     FileText,
     Users,
     Settings,
-    ChevronRight
+    ChevronRight,
+    Sun,
+    Moon
 } from 'lucide-vue-next';
 
 
@@ -24,9 +26,20 @@ const toggleSidebar = () => {
     isExpanded.value = !isExpanded.value;
 };
 
+const isDarkMode = ref(false);
+const toggleDarkMode = () => {
+    isDarkMode.value = !isDarkMode.value;
+    if (isDarkMode.value) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+    }
+};
+
 const emit = defineEmits(['addTab'])
 
 function Tabs(item) {
+    console.log(item);
     emit('addTab', item.name);
 }
 
@@ -34,21 +47,21 @@ const menuItems = ref([
     { id: 0, name: 'Home', icon: House, isSubmenuOpen: false },
     { id: 1, name: 'Dashboard', icon: LayoutDashboard, isSubmenuOpen: false },
     { id: 2, name: 'Almacen', icon: Package, isSubmenuOpen: false, subItems: ['Entradas', 'Salidas'] },
-    { id: 3, name: 'Herramientas', icon: Wrench, isSubmenuOpen: false },
+    /*     { id: 3, name: 'Herramientas', icon: Wrench, isSubmenuOpen: false }, */
     { id: 4, name: 'Calidad', icon: Award, isSubmenuOpen: false },
     { id: 5, name: 'Producción', icon: Factory, isSubmenuOpen: false, subItems: ['Línea 1', 'Línea 2'] },
     { id: 6, name: 'Ventas', icon: TrendingUp, isSubmenuOpen: false },
-    { id: 7, name: 'Compras', icon: ShoppingCart, isSubmenuOpen: false },
-    { id: 8, name: 'Finanzas', icon: CircleDollarSign, isSubmenuOpen: false },
+    /*     { id: 7, name: 'Compras', icon: ShoppingCart, isSubmenuOpen: false },
+        { id: 8, name: 'Finanzas', icon: CircleDollarSign, isSubmenuOpen: false }, */
     { id: 9, name: 'Mantenimiento', icon: Hammer, isSubmenuOpen: false },
     { id: 10, name: 'Reportes', icon: FileText, isSubmenuOpen: false },
     { id: 11, name: 'RH', icon: Users, isSubmenuOpen: false },
-    { id: 12, name: 'Configuración', icon: Settings, isSubmenuOpen: false, subItems: ['General', 'Usuarios', 'Permisos'] }
+    { id: 12, name: 'Configuración', icon: Settings, isSubmenuOpen: false, subItems: ['General', 'Usuarios', 'Permisos', 'Roles', 'Catálogos'] }
 ]);
 
-const toggleSubmenu = (item) => {
+/* const toggleSubmenu = (item) => {
     item.isSubmenuOpen = !item.isSubmenuOpen;
-};
+}; */
 </script>
 
 <template>
@@ -63,10 +76,10 @@ const toggleSubmenu = (item) => {
 
             <nav class="nav-menu">
                 <ul class="menu-list">
-                    <li v-for="item in menuItems" :key="item.id" class="menu-item-container" @click="Tabs(item)">
+                    <li v-for="item in menuItems" :key="item.id" class="menu-item-container"
+                        @click="item.subItems ? null : Tabs(item)">
 
-                        <div class="menu-item" @click="item.subItems ? toggleSubmenu(item) : null"
-                            :title="!isExpanded ? item.name : ''">
+                        <div class="menu-item" :title="!isExpanded ? item.name : ''">
                             <span class="icon">
                                 <component :is="item.icon" :size="20" :stroke-width="1.5" />
                             </span>
@@ -83,19 +96,26 @@ const toggleSubmenu = (item) => {
 
                         <ul v-if="item.subItems" class="submenu" :class="{ 'open': item.isSubmenuOpen }">
                             <li v-if="!isExpanded" class="submenu-title">{{ item.name }}</li>
-                            <li v-for="(subItem, index) in item.subItems" :key="index" class="submenu-item">
+                            <li v-for="(subItem, index) in item.subItems" :key="index" class="submenu-item"
+                                @click="Tabs({ name: subItem })">
                                 {{ subItem }}
                             </li>
                         </ul>
 
                     </li>
-                </ul>
+                    
+                    <!-- Dark Mode Toggle -->
+                    <li class="menu-item-container" style="margin-top: auto;">
+                        <div class="menu-item" @click="toggleDarkMode" :title="!isExpanded ? (isDarkMode ? 'Modo Claro' : 'Modo Oscuro') : ''">
+                            <span class="icon">
+                                <component :is="isDarkMode ? Sun : Moon" :size="20" :stroke-width="1.5" />
+                            </span>
+                            <transition name="fade">
+                                <span class="label" v-show="isExpanded">{{ isDarkMode ? 'Modo Claro' : 'Modo Oscuro' }}</span>
+                            </transition>
+                        </div>
+                    </li>
 
-                <ul>
-                    <li><router-link to="/">Home</router-link></li>
-                    <li><router-link to="/about">About</router-link></li>
-                    <li><router-link to="/contact">Contact</router-link></li>
-                    <li><router-link to="/about">About</router-link></li>
                 </ul>
             </nav>
         </div>
@@ -162,7 +182,7 @@ const toggleSubmenu = (item) => {
 .hamburger .bar {
     width: 100%;
     height: 2px;
-    background-color: #333;
+    background-color: var(--color-text-primary);
     border-radius: 10px;
     transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     transform-origin: left center;
@@ -228,7 +248,7 @@ const toggleSubmenu = (item) => {
 }
 
 .sidebar-container.expanded .menu-item:hover {
-    background: rgba(255, 255, 255, 0.9);
+    background: var(--color-bg-elevated);
 }
 
 .icon {
@@ -243,7 +263,7 @@ const toggleSubmenu = (item) => {
 .label {
     margin-left: 14px;
     font-size: 0.95rem;
-    color: #333;
+    color: var(--color-text-primary);
     font-weight: 500;
     white-space: nowrap;
 }
@@ -251,7 +271,7 @@ const toggleSubmenu = (item) => {
 .chevron {
     margin-left: auto;
     font-size: 0.7rem;
-    color: #999;
+    color: var(--color-text-tertiary);
     transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
     display: flex;
     align-items: center;
@@ -260,7 +280,7 @@ const toggleSubmenu = (item) => {
 .menu-item-container:hover .chevron,
 .chevron.open {
     transform: translateX(3px);
-    color: #333;
+    color: var(--color-text-primary);
 }
 
 .fade-enter-active,
@@ -311,9 +331,9 @@ const toggleSubmenu = (item) => {
     padding: 8px 18px;
     font-size: 0.7rem;
     text-transform: uppercase;
-    color: #888;
+    color: var(--color-text-tertiary);
     letter-spacing: 0.5px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid var(--color-border-default);
     margin-bottom: 4px;
     pointer-events: none;
 }
@@ -322,14 +342,14 @@ const toggleSubmenu = (item) => {
     padding: 10px 18px;
     cursor: pointer;
     transition: all 0.2s ease;
-    color: #444;
+    color: var(--color-text-secondary);
     font-size: 0.85rem;
     font-weight: 500;
 }
 
 .submenu-item:hover {
-    background-color: rgba(0, 0, 0, 0.04);
-    color: #000;
+    background-color: var(--color-bg-elevated);
+    color: var(--color-text-primary);
     padding-left: 22px;
 }
 </style>
