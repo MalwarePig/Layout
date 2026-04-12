@@ -44,15 +44,15 @@ function setActiveTab(tabId, tabName) {
             <div class="tabs-container">
 
                 <button class="tab" v-for="tab in props.listTabs" :key="tab.id"
-                    :class="{ 'active': activeTab === tab.id }" @click="setActiveTab(tab.id, tab.name)">
+                        :class="{ 'active': activeTab === tab.id }" @click="setActiveTab(tab.id, tab.name)">
                     <span>{{ tab.name }}</span>
                     <component class="close-tab" :is="X" :size="16" :stroke-width="2.5" v-if="activeTab === tab.id"
-                        @click="closeTab(tab.id)" />
+                               @click="closeTab(tab.id)" />
                 </button>
 
                 <!-- Default -->
                 <button class="tab" :key="1" v-if="props.listTabs.length === 0" :class="{ 'active': activeTab === 1 }"
-                    @click="activeTab = 1">
+                        @click="activeTab = 1">
                     <component :is="Plus" :size="18" :stroke-width="2" />
                 </button>
             </div>
@@ -84,7 +84,7 @@ function setActiveTab(tabId, tabName) {
     display: flex;
     align-items: center;
     gap: 12px;
-    min-width: 250px;
+    width: 200px;
 }
 
 img {
@@ -143,12 +143,15 @@ img {
 }
 
 .actions {
+    position: absolute;
+    right: 30px;
     display: flex;
     align-items: center;
     gap: 15px;
     min-width: 250px;
     justify-content: flex-end;
 }
+
 
 .user-avatar {
     width: 42px;

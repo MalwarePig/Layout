@@ -51,6 +51,8 @@ const { tabs, addTab, closeTab, currentPage, activeTab } = useTabs();
   align-items: stretch;
   flex-grow: 1;
   overflow: hidden;
+  margin: 0;
+  padding: 0;
 }
 
 .main-wrapper {
@@ -58,5 +60,7 @@ const { tabs, addTab, closeTab, currentPage, activeTab } = useTabs();
   overflow: auto;
   padding: 20px;
   background: var(--color-bg-surface);
+  margin: 0;
+  padding: 0;
 }
 </style>

@@ -1,13 +1,19 @@
-<script setup></script>
+<script setup>
+import btnSearch from '../../Buttons/btnSearch/index.vue'
+</script>
 <template>
-    <div class="home">
-        <h1>Home</h1>
+    <div class="ComponentGeneral">
+        <div class="header">
+            <btnSearch />
+        </div>
     </div>
 </template>
 <style scoped>
-.home {
-    background-color: var(--color-bg-page);
-    width: 100%;
-    height: 100%;
+.ComponentGeneral {
+    display: flex;
+    justify-content: center;
+    margin: 0;
 }
+
+.header {}
 </style>
