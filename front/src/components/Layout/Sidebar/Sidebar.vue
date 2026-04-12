@@ -40,13 +40,14 @@ const emit = defineEmits(['addTab'])
 
 function Tabs(item) {
     console.log(item);
-    emit('addTab', item.name);
+    emit('addTab', item);
 }
 
+/* Mapear rutas paso uno, seguir en useTabs para el paso de cargar los componentes segun la ruta */
 const menuItems = ref([
     { id: 0, name: 'Home', icon: House, isSubmenuOpen: false },
     { id: 1, name: 'Dashboard', icon: LayoutDashboard, isSubmenuOpen: false },
-    { id: 2, name: 'Almacen', icon: Package, isSubmenuOpen: false, subItems: ['Entradas', 'Salidas'] },
+    { id: 2, name: 'Almacen', icon: Package, isSubmenuOpen: false, subItems: [{ name: 'Entradas', link: 'AlmacenEntradas' }, { name: 'Salidas', link: 'AlmacenSalidas' }] },
     /*     { id: 3, name: 'Herramientas', icon: Wrench, isSubmenuOpen: false }, */
     { id: 4, name: 'Calidad', icon: Award, isSubmenuOpen: false },
     { id: 5, name: 'Producción', icon: Factory, isSubmenuOpen: false, subItems: ['Línea 1', 'Línea 2'] },
@@ -56,7 +57,7 @@ const menuItems = ref([
     { id: 9, name: 'Mantenimiento', icon: Hammer, isSubmenuOpen: false },
     { id: 10, name: 'Reportes', icon: FileText, isSubmenuOpen: false },
     { id: 11, name: 'RH', icon: Users, isSubmenuOpen: false },
-    { id: 12, name: 'Configuración', icon: Settings, isSubmenuOpen: false, subItems: ['General', 'Usuarios', 'Permisos', 'Roles', 'Catálogos'] }
+    { id: 12, name: 'Configuración', icon: Settings, isSubmenuOpen: false, subItems: [{ name: 'General', link: 'ConfiguracionGeneral' }, { name: 'Usuarios', link: 'ConfiguracionUsuarios' }] }
 ]);
 
 /* const toggleSubmenu = (item) => {
@@ -89,7 +90,7 @@ const menuItems = ref([
                             </transition>
 
                             <span v-if="item.subItems && isExpanded" class="chevron"
-                                :class="{ 'open': item.isSubmenuOpen }">
+                                  :class="{ 'open': item.isSubmenuOpen }">
                                 <ChevronRight :size="16" :stroke-width="2" />
                             </span>
                         </div>
@@ -97,21 +98,23 @@ const menuItems = ref([
                         <ul v-if="item.subItems" class="submenu" :class="{ 'open': item.isSubmenuOpen }">
                             <li v-if="!isExpanded" class="submenu-title">{{ item.name }}</li>
                             <li v-for="(subItem, index) in item.subItems" :key="index" class="submenu-item"
-                                @click="Tabs({ name: subItem })">
-                                {{ subItem }}
+                                @click="Tabs({ name: subItem.name, link: subItem.link })">
+                                {{ subItem.name }}
                             </li>
                         </ul>
 
                     </li>
-                    
+
                     <!-- Dark Mode Toggle -->
                     <li class="menu-item-container" style="margin-top: auto;">
-                        <div class="menu-item" @click="toggleDarkMode" :title="!isExpanded ? (isDarkMode ? 'Modo Claro' : 'Modo Oscuro') : ''">
+                        <div class="menu-item" @click="toggleDarkMode"
+                             :title="!isExpanded ? (isDarkMode ? 'Modo Claro' : 'Modo Oscuro') : ''">
                             <span class="icon">
                                 <component :is="isDarkMode ? Sun : Moon" :size="20" :stroke-width="1.5" />
                             </span>
                             <transition name="fade">
-                                <span class="label" v-show="isExpanded">{{ isDarkMode ? 'Modo Claro' : 'Modo Oscuro' }}</span>
+                                <span class="label" v-show="isExpanded">{{ isDarkMode ? 'Modo Claro' : 'Modo Oscuro'
+                                    }}</span>
                             </transition>
                         </div>
                     </li>

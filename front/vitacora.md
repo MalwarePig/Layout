@@ -26,3 +26,9 @@ Prototipo de la interfaz
 │ 💰 Ventas    │                                               │
 │ 📊 Reportes  │                                               │
 └──────────────┴───────────────────────────────────────────────┘
+
+Agregar nuevas paginas
+1. Crear la carpeta en views
+2. Crear el componente en views
+3. Agregar el componente en el sidebar
+4. Agregar el componente en el useTabs

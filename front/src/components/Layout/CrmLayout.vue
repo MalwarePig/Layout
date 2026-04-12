@@ -2,7 +2,7 @@
 import Sidebar from './Sidebar/Sidebar.vue'
 import TabsBar from './TabsBar/TabsBar.vue'
 
-/* TABS */
+
 import { useTabs } from '../../composables/useTabs'
 const { tabs, addTab, closeTab, currentPage, activeTab } = useTabs();
 

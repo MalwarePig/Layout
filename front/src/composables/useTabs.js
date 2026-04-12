@@ -10,6 +10,9 @@ const componentsMap = {
   Almacen: defineAsyncComponent(
     () => import("../components/Pages/Almacen/Almacen.vue"),
   ),
+  AlmacenSalidas: defineAsyncComponent(
+    () => import("../components/Pages/Almacen/AlmacenSalidas.vue"),
+  ),
   Dashboard: defineAsyncComponent(
     () => import("../components/Pages/Dashboard/Dashboard.vue"),
   ),
@@ -42,15 +45,16 @@ const componentsMap = {
 
 export function useTabs() {
   function addTab(tabName) {
-    if (tabs.value.find((t) => t.name === tabName)) {
-      currentPage.value = componentsMap[tabName] || Home;
+    console.log("en usetab", tabName.name, tabName.link);
+    if (tabs.value.find((t) => t.name === tabName.name)) {
+      currentPage.value = componentsMap[tabName.link] || Home;
       return;
     } else if (tabs.value.length > 8) {
-      tabs.value[tabs.value.length - 1] = { id: nextTabId++, name: tabName };
-      currentPage.value = componentsMap[tabName] || Home;
+      tabs.value[tabs.value.length - 1] = { id: nextTabId++, name: tabName.name };
+      currentPage.value = componentsMap[tabName.link] || Home;
     } else {
-      tabs.value.push({ id: nextTabId++, name: tabName });
-      currentPage.value = componentsMap[tabName] || Home;
+      tabs.value.push({ id: nextTabId++, name: tabName.name });
+      currentPage.value = componentsMap[tabName.link] || Home;
     }
   }
 
