@@ -1,7 +1,9 @@
+@import "tailwindcss";
+
 :root,
 [data-theme="light"] {
-  --color-bg-page: #f4f3f8;
-  --color-bg-surface: #FFFFFF;
+  --color-bg-surface: #f4f3f8;
+  --color-bg-page: #FFFFFF;
   --color-bg-sidebar: #EAE6FF;
   --color-bg-elevated: #F8F6FF;
 
@@ -88,7 +90,7 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 8px 18px;
+  padding: 6px 10px;
   border-radius: 8px;
   font-size: 14px;
   font-weight: 500;

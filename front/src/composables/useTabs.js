@@ -3,7 +3,7 @@ import Home from "../components/Pages/Home/Home.vue";
 
 let nextTabId = 1;
 const currentPage = shallowRef(Home);
-const tabs = ref([{ id: nextTabId++, name: "Home" }]);
+const tabs = ref([{ id: nextTabId++, name: "Home", link: "Home" }]);
 // Mapeo de componentes
 const componentsMap = {
   Home,
@@ -50,10 +50,10 @@ export function useTabs() {
       currentPage.value = componentsMap[tabName.link] || Home;
       return;
     } else if (tabs.value.length > 8) {
-      tabs.value[tabs.value.length - 1] = { id: nextTabId++, name: tabName.name };
+      tabs.value[tabs.value.length - 1] = { id: nextTabId++, name: tabName.name, link: tabName.link };
       currentPage.value = componentsMap[tabName.link] || Home;
     } else {
-      tabs.value.push({ id: nextTabId++, name: tabName.name });
+      tabs.value.push({ id: nextTabId++, name: tabName.name, link: tabName.link });
       currentPage.value = componentsMap[tabName.link] || Home;
     }
   }
@@ -65,8 +65,9 @@ export function useTabs() {
     }
   }
 
-  function activeTab(tabName) {
-    currentPage.value = componentsMap[tabName] || Home;
+  function activeTab(tabName, tabLink) {
+    console.log("en usetab", tabName, tabLink);
+    currentPage.value = componentsMap[tabLink] || Home;
   }
 
   return {

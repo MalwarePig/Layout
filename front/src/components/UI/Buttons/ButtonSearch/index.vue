@@ -13,7 +13,7 @@
     justify-content: center;
     gap: 10px;
     width: 500px;
-    height: 30px;
+    height: 50px;
     background-color: var(--color-bg-page);
     border-radius: 10px;
     padding: 10px;

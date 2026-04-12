@@ -11,12 +11,9 @@ const props = defineProps({
     }
 });
 
-watch(() => props.listTabs.length, (newLen, oldLen) => {
-    if (newLen > 0 && newLen > oldLen) {
-        activeTab.value = props.listTabs[newLen - 1].id;
-    } else if (newLen === 0) {
-        activeTab.value = 1;
-    }
+watch(() => props.listTabs.length, () => {
+    console.log('en tabsbar watch', props.listTabs);
+    activeTab.value = props.listTabs[props.listTabs.length - 1].id;
 });
 
 const emit = defineEmits(['setCloseTab', 'setActiveTab']);
@@ -27,9 +24,10 @@ function closeTab(tabId) {
 
 }
 
-function setActiveTab(tabId, tabName) {
+function setActiveTab(tabId, tabName, tabLink) {
+    console.log('en tabsbar active', tabId, tabName, tabLink);
     activeTab.value = tabId;
-    emit('setActiveTab', tabName);
+    emit('setActiveTab', tabName, tabLink);
 }
 
 </script>
@@ -44,7 +42,7 @@ function setActiveTab(tabId, tabName) {
             <div class="tabs-container">
 
                 <button class="tab" v-for="tab in props.listTabs" :key="tab.id"
-                        :class="{ 'active': activeTab === tab.id }" @click="setActiveTab(tab.id, tab.name)">
+                        :class="{ 'active': activeTab === tab.id }" @click="setActiveTab(tab.id, tab.name, tab.link)">
                     <span>{{ tab.name }}</span>
                     <component class="close-tab" :is="X" :size="16" :stroke-width="2.5" v-if="activeTab === tab.id"
                                @click="closeTab(tab.id)" />
@@ -134,7 +132,7 @@ img {
 }
 
 .tab.active {
-    background-color: var(--color-bg-surface);
+    background-color: var(--color-bg-page);
     color: var(--color-accent-default);
     font-weight: 600;
     box-shadow: 0 4px 14px rgba(92, 63, 212, 0.12), 0 1px 4px rgba(0, 0, 0, 0.06);

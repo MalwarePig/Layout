@@ -39,25 +39,25 @@ const toggleDarkMode = () => {
 const emit = defineEmits(['addTab'])
 
 function Tabs(item) {
-    console.log(item);
+    console.log('en sidebar', item);
     emit('addTab', item);
 }
 
 /* Mapear rutas paso uno, seguir en useTabs para el paso de cargar los componentes segun la ruta */
 const menuItems = ref([
     { id: 0, name: 'Home', icon: House, isSubmenuOpen: false },
-    { id: 1, name: 'Dashboard', icon: LayoutDashboard, isSubmenuOpen: false },
-    { id: 2, name: 'Almacen', icon: Package, isSubmenuOpen: false, subItems: [{ name: 'Entradas', link: 'AlmacenEntradas' }, { name: 'Salidas', link: 'AlmacenSalidas' }] },
+    { id: 1, name: 'Dashboard', link: 'Dashboard', icon: LayoutDashboard, isSubmenuOpen: false },
+    { id: 2, name: 'Almacen', link: 'Almacen', icon: Package, isSubmenuOpen: false, subItems: [{ name: 'Entradas', link: 'AlmacenEntradas' }, { name: 'Salidas', link: 'AlmacenSalidas' }] },
     /*     { id: 3, name: 'Herramientas', icon: Wrench, isSubmenuOpen: false }, */
-    { id: 4, name: 'Calidad', icon: Award, isSubmenuOpen: false },
-    { id: 5, name: 'Producción', icon: Factory, isSubmenuOpen: false, subItems: ['Línea 1', 'Línea 2'] },
-    { id: 6, name: 'Ventas', icon: TrendingUp, isSubmenuOpen: false },
+    { id: 4, name: 'Calidad', link: 'Calidad', icon: Award, isSubmenuOpen: false },
+    { id: 5, name: 'Producción', link: 'Produccion', icon: Factory, isSubmenuOpen: false, subItems: [{ name: 'Línea 1', link: 'ProduccionLinea1' }, { name: 'Línea 2', link: 'ProduccionLinea2' }] },
+    { id: 6, name: 'Ventas', link: 'Ventas', icon: TrendingUp, isSubmenuOpen: false },
     /*     { id: 7, name: 'Compras', icon: ShoppingCart, isSubmenuOpen: false },
         { id: 8, name: 'Finanzas', icon: CircleDollarSign, isSubmenuOpen: false }, */
-    { id: 9, name: 'Mantenimiento', icon: Hammer, isSubmenuOpen: false },
-    { id: 10, name: 'Reportes', icon: FileText, isSubmenuOpen: false },
-    { id: 11, name: 'RH', icon: Users, isSubmenuOpen: false },
-    { id: 12, name: 'Configuración', icon: Settings, isSubmenuOpen: false, subItems: [{ name: 'General', link: 'ConfiguracionGeneral' }, { name: 'Usuarios', link: 'ConfiguracionUsuarios' }] }
+    { id: 9, name: 'Mantenimiento', link: 'Mantenimiento', icon: Hammer, isSubmenuOpen: false },
+    { id: 10, name: 'Reportes', link: 'Reportes', icon: FileText, isSubmenuOpen: false },
+    { id: 11, name: 'RH', link: 'RH', icon: Users, isSubmenuOpen: false },
+    { id: 12, name: 'Configuración', link: 'Configuracion', icon: Settings, isSubmenuOpen: false, subItems: [{ name: 'General', link: 'ConfiguracionGeneral' }, { name: 'Usuarios', link: 'ConfiguracionUsuarios' }] }
 ]);
 
 /* const toggleSubmenu = (item) => {

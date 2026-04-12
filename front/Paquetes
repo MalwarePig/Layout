@@ -3,3 +3,16 @@ npm install lucide-vue-next
 
 /*vue router*/
 npm install vue-router
+
+/*shadcn ui*/
+npx shadcn-vue@latest init
+
+/*tailwind css*/
+npm i -D naive-ui
+npm i -D vfonts
+
+
+rm -rf node_modules
+rm -rf dist
+rm -rf .vite
+rm -rf package-lock.json
