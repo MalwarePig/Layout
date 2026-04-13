@@ -1,11 +1,8 @@
 <script setup>
-import btnSearch from '../../UI/Buttons/ButtonSearch/index.vue'
 import { NDataTable } from "naive-ui"
-import btnFunction from '../../UI/Buttons/btnFunction/index.vue'
+import btnFunction from '../Buttons/btnFunction/index.vue'
 import { h } from "vue"
 
-
-import CustomTable from "../../UI/CustomTable/CustomTable.vue"
 
 const columns = [
     {
@@ -233,35 +230,16 @@ const pagination = {
     pageSize: 10
 }
 
+
 </script>
+
 <template>
-    <div class="ComponentGeneral">
-        <div class="header">
-            <btnSearch />
-        </div>
-
-        <div class="tableContainer">
-            <n-data-table :columns="columns" :data="data" flex-height striped :pagination="pagination" />
-        </div>
-
-        <CustomTable />
-
-        <div class="formContainer">
-
-        </div>
-
-
+    <div class="tableContainer">
+        <n-data-table :columns="columns" :data="data" flex-height striped :pagination="pagination" />
     </div>
 </template>
+
 <style scoped>
-.ComponentGeneral {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    margin: 0;
-}
-
 .tableContainer {
     display: flex;
     width: 80%;
