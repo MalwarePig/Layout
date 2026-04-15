@@ -1,10 +1,10 @@
 <script setup>
-
+const cantidad = defineModel('Cantidad', { type: Number })
 </script>
 <template>
     <div class="header-buttons">
-        <input type="text" placeholder="Buscar" class="input-search">
-        <button class="btn btn-outline">Outline</button>
+        <input type="text" placeholder="Buscar" class="input-search" v-model.number="cantidad">
+        <button class="btn btn-outline">Buscar</button>
     </div>
 </template>
 <style scoped>

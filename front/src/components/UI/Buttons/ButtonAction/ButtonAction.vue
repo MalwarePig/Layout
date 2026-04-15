@@ -1,7 +1,7 @@
 <script setup>
-function handleClick() {
+/* function handleClick() {
     alert("hola")
-}
+} */
 </script>
 <template>
     <button @click="handleClick">Click</button>
