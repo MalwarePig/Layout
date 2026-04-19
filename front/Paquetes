@@ -11,7 +11,7 @@ npx shadcn-vue@latest init
 npm i -D naive-ui
 npm i -D vfonts
 
-
+/*limpiar modulos*/
 rm -rf node_modules
 rm -rf dist
 rm -rf .vite
