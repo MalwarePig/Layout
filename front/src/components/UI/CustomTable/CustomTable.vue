@@ -17,9 +17,9 @@ console.log(props.pagination)
 </script>
 
 <template>
-
-
     <div class="tableContainer">
+        <!-- flex-height hace que la tabla se ajuste a la altura del contenedor -->
+        <!-- striped hace que las filas de la tabla tengan un color alterno -->
         <n-data-table :columns="columns" :data="data" flex-height striped :pagination="pagination" />
     </div>
 </template>
@@ -49,6 +49,12 @@ console.log(props.pagination)
     padding: 4px 8px;
     line-height: 1.2;
     border: 1px dashed var(--color-border-default);
+}
+
+/* css para el hover de las filas de la tabla */
+:deep(.n-data-table .n-data-table-tbody .n-data-table-tr:hover > .n-data-table-td) {
+    background-color: #B0B0D0 !important;
+    transition: background-color 0.2s ease;
 }
 
 /* css para el control de paginacion */
