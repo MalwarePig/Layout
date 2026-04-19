@@ -41,6 +41,8 @@
   --color-danger-text: #FFFFFF;
   --color-danger-subtle: #FFE5E5;
   --color-danger-border: #D50000;
+
+  --color-shadow-default: 0 4px 25px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 [data-theme="dark"] {

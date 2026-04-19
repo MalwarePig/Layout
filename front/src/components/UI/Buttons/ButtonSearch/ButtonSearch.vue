@@ -1,10 +1,14 @@
 <script setup>
+import { Search } from 'lucide-vue-next';
+
 const cantidad = defineModel('Cantidad', { type: Number })
 </script>
 <template>
     <div class="header-buttons">
         <input type="text" placeholder="Buscar" class="input-search" v-model.number="cantidad">
-        <button class="btn btn-outline">Buscar</button>
+        <button class="btn btn-outline">
+            <Search />
+        </button>
     </div>
 </template>
 <style scoped>
@@ -18,12 +22,17 @@ const cantidad = defineModel('Cantidad', { type: Number })
     border-radius: 10px;
     padding: 10px;
     margin-top: 20px;
-    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--color-shadow-default);
     border: 1px solid var(--color-border-strong);
 }
 
 input {
     background-color: var(--color-bg-page);
     padding-inline: 20px;
+}
+
+button {
+    font-size: 0.1rem;
+    padding: 5px;
 }
 </style>

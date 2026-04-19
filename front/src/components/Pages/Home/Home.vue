@@ -11,7 +11,7 @@ async function obtenerDatosTabla() {
     const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=' + Cantidad.value);
     const responseData = await res.json();
     data.value = responseData.results;
-    /* console.log(data.value); */
+    console.log(data.value);
 
 }
 
