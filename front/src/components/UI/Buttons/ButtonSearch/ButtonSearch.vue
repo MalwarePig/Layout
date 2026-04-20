@@ -21,7 +21,7 @@ const cantidad = defineModel('Cantidad', { type: Number })
     background-color: var(--color-bg-page);
     border-radius: 10px;
     padding: 10px;
-    margin-top: 20px;
+    margin-top: 5px;
     box-shadow: var(--color-shadow-default);
     border: 1px solid var(--color-border-strong);
 }

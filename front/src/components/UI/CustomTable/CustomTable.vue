@@ -12,8 +12,6 @@ const props = defineProps({
 console.log(props.data)
 console.log(props.columns)
 console.log(props.pagination)
-
-
 </script>
 
 <template>
@@ -27,9 +25,9 @@ console.log(props.pagination)
 <style scoped>
 .tableContainer {
     display: flex;
-    width: 80%;
-    height: 50%;
-    margin: 20px auto;
+    width: 95%;
+    height: 40%;
+    margin: 5px auto;
     padding: 10px;
     background-color: var(--color-bg-page);
     border: 1px solid #ccc;
@@ -42,12 +40,14 @@ console.log(props.pagination)
     background-color: var(--color-bg-page);
     color: var(--color-text-tertiary);
     font-weight: bold;
+    padding: 6px 8px;
+    line-height: 1.4;
 }
 
 /* css para las celdas de la tabla */
 :deep(.n-data-table-td) {
     padding: 4px 8px;
-    line-height: 1.2;
+    line-height: 1.1;
     border: 1px dashed var(--color-border-default);
 }
 

@@ -42,7 +42,7 @@ const { tabs, addTab, closeTab, currentPage, activeTab } = useTabs();
 }
 
 .sidebar-wrapper {
-  width: 200px;
+  width: auto;
 }
 
 .main-container {

@@ -136,6 +136,9 @@ const menuItems = ref([
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     box-shadow: 0 4px 25px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
     border-bottom: 1px solid var(--color-border-default);
+    
+    /* Añadido para empujar el contenido */
+    transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .mac-dock {
@@ -162,6 +165,7 @@ const menuItems = ref([
     box-sizing: border-box;
 }
 
+.sidebar-container.expanded,
 .sidebar-container.expanded .mac-dock {
     width: 200px;
 }
@@ -232,8 +236,8 @@ const menuItems = ref([
     padding: 12px 14px;
     border-radius: 8px;
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
-    width: 100%;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    height: 44px;
     box-sizing: border-box;
     position: relative;
     justify-content: flex-start;
@@ -288,7 +292,7 @@ const menuItems = ref([
 
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1), transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .fade-enter-from,

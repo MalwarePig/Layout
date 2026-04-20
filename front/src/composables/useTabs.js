@@ -11,7 +11,7 @@ const componentsMap = {
     () => import("../components/Pages/Almacen/Almacen.vue"),
   ),
   AlmacenSalidas: defineAsyncComponent(
-    () => import("../components/Pages/Almacen/AlmacenSalidas.vue"),
+    () => import("../components/Pages/Almacen/AlmacenSalidas/AlmacenSalidas.vue"),
   ),
   Dashboard: defineAsyncComponent(
     () => import("../components/Pages/Dashboard/Dashboard.vue"),
