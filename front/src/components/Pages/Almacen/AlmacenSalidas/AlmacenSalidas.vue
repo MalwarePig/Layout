@@ -110,6 +110,7 @@ function selectArticle() {
         <div class="table-footer">
             <NButton type="primary" @click="console.log('Agregar')">
                 <Save />
+                <Save />
             </NButton>
         </div>
     </div>
@@ -202,6 +203,6 @@ function selectArticle() {
     border: 1px solid #ccc;
     border-radius: 10px;
     box-shadow: var(--color-shadow-default);
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 </style>
