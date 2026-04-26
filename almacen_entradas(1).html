@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AlmacénPro — Entradas</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #f2f0fc;
+  --sidebar: #130e2e;
+  --sidebar-hover: rgba(255,255,255,0.07);
+  --surface: #ffffff;
+  --surface2: #f7f6fe;
+  --border: #e6e2fb;
+  --border2: #d0cbf7;
+  --text: #1a1535;
+  --text2: #6b63a8;
+  --text3: #a09ac2;
+  --accent: #4f46e5;
+  --teal: #0d9488;
+  --teal-bg: #f0fdf9;
+  --teal-bd: #99f6e4;
+  --amber: #d97706;
+  --amber-bg: #fffbeb;
+  --amber-bd: #fcd34d;
+  --red: #dc2626;
+  --red-bg: #fef2f2;
+  --red-bd: #fca5a5;
+  --green: #16a34a;
+  --green-bg: #f0fdf4;
+  --green-bd: #86efac;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --font: 'DM Sans', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+  --kpi-v-bg:#f5f3ff; --kpi-v-bd:#c4b5fd; --kpi-v-lbl:#7c3aed; --kpi-v-val:#3730a3;
+  --kpi-t-bg:#f0fdf9; --kpi-t-bd:#99f6e4; --kpi-t-lbl:#0f766e; --kpi-t-val:#134e4a;
+  --kpi-a-bg:#fffbeb; --kpi-a-bd:#fcd34d; --kpi-a-lbl:#b45309; --kpi-a-val:#78350f;
+  --kpi-b-bg:#eff6ff; --kpi-b-bd:#93c5fd; --kpi-b-lbl:#1d4ed8; --kpi-b-val:#1e3a8a;
+  --chip-v-bg:#ede9fe; --chip-v-cl:#5b21b6; --chip-v-bd:#c4b5fd;
+  --chip-g-bg:#f0fdf4; --chip-g-cl:#14532d; --chip-g-bd:#86efac;
+  --chip-a-bg:#fffbeb; --chip-a-cl:#78350f; --chip-a-bd:#fcd34d;
+  --sel-bg:#eef2ff; --sel-bd:#a5b4fc; --sel-name:#3730a3; --sel-meta:#6366f1;
+  --tc-bg:#f7f6fe; --tc-bd:#e6e2fb; --tc-hover-bg:#f5f3ff; --tc-hover-bd:#a5b4fc;
+  --tc-sel-bg:#eef2ff; --tc-sel-bd:#4f46e5;
+  --tc-fam-bg:#eef2ff; --tc-fam-cl:#4338ca;
+  --ot-bg:#eef2ff; --ot-cl:#4338ca;
+  --thead-bg:#f7f6fe;
+  --form-input-bg:#f7f6fe;
+  --step-idle-bg:#f0eeff; --step-idle-cl:#a5b4fc;
+  --step-done-bg:#d1fae5; --step-done-cl:#065f46;
+  --notif-bd:var(--border);
+}
+
+html.dark {
+  --bg: #0a0a12;
+  --sidebar: #07060f;
+  --sidebar-hover: rgba(255,255,255,0.05);
+  --surface: #111119;
+  --surface2: #18181f;
+  --border: #242330;
+  --border2: #302e40;
+  --text: #e8e6ff;
+  --text2: #8b85c0;
+  --text3: #55507a;
+  --accent: #6366f1;
+  --teal: #2dd4bf;
+  --teal-bg: #0d2320;
+  --teal-bd: #1a4a45;
+  --amber: #fbbf24;
+  --amber-bg: #1c1500;
+  --amber-bd: #3d2f00;
+  --red: #f87171;
+  --red-bg: #1f0808;
+  --red-bd: #4a1515;
+  --green: #4ade80;
+  --green-bg: #071a0e;
+  --green-bd: #14532d;
+  --kpi-v-bg:#13112a; --kpi-v-bd:#312c6a; --kpi-v-lbl:#a5b4fc; --kpi-v-val:#c7d2fe;
+  --kpi-t-bg:#0a1f1d; --kpi-t-bd:#134e4a; --kpi-t-lbl:#5eead4; --kpi-t-val:#99f6e4;
+  --kpi-a-bg:#180f00; --kpi-a-bd:#3d2f00; --kpi-a-lbl:#fcd34d; --kpi-a-val:#fef08a;
+  --kpi-b-bg:#0d1526; --kpi-b-bd:#1e3a6e; --kpi-b-lbl:#93c5fd; --kpi-b-val:#bfdbfe;
+  --chip-v-bg:#1e1b3a; --chip-v-cl:#a5b4fc; --chip-v-bd:#312c6a;
+  --chip-g-bg:#071a0e; --chip-g-cl:#4ade80; --chip-g-bd:#14532d;
+  --chip-a-bg:#180f00; --chip-a-cl:#fcd34d; --chip-a-bd:#3d2f00;
+  --sel-bg:#13112a; --sel-bd:#312c6a; --sel-name:#a5b4fc; --sel-meta:#818cf8;
+  --tc-bg:#18181f; --tc-bd:#242330; --tc-hover-bg:#1e1b38; --tc-hover-bd:#4338ca;
+  --tc-sel-bg:#1e1b38; --tc-sel-bd:#6366f1;
+  --tc-fam-bg:#1e1b38; --tc-fam-cl:#a5b4fc;
+  --ot-bg:#1e1b38; --ot-cl:#a5b4fc;
+  --thead-bg:#18181f;
+  --form-input-bg:#18181f;
+  --step-idle-bg:#1e1b38; --step-idle-cl:#4f46e5;
+  --step-done-bg:#071a0e; --step-done-cl:#4ade80;
+  --notif-bd:#242330;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 14px; height: 100vh; display: flex; overflow: hidden; }
+
+/* ─── SIDEBAR ─── */
+.sidebar {
+  width: 230px; background: var(--sidebar); display: flex; flex-direction: column;
+  flex-shrink: 0; height: 100vh; overflow-y: auto;
+}
+.sb-brand {
+  padding: 22px 18px 18px; display: flex; align-items: center; gap: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.06); flex-shrink: 0;
+}
+.sb-logo {
+  width: 36px; height: 36px; background: var(--accent); border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.sb-logo-svg { width: 18px; height: 18px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.sb-app { font-size: 15px; font-weight: 600; color: #e8e5ff; letter-spacing: -0.3px; }
+.sb-ver { font-size: 10px; color: #6b63a8; margin-top: 1px; }
+.sb-section {
+  padding: 18px 18px 6px; font-size: 10px; font-weight: 600;
+  color: #4a4272; text-transform: uppercase; letter-spacing: 0.08em;
+}
+.sb-item {
+  display: flex; align-items: center; gap: 9px; padding: 9px 14px; margin: 2px 8px;
+  border-radius: 9px; cursor: pointer; color: #8b82c4; font-size: 13px; font-weight: 400;
+  transition: all 0.13s; position: relative;
+}
+.sb-item:hover { background: var(--sidebar-hover); color: #d4cff7; }
+.sb-item.active { background: var(--accent); color: #fff; font-weight: 500; }
+.sb-item svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+.sb-badge { margin-left: auto; background: rgba(99,255,200,0.15); color: #5eead4; font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 10px; }
+.sb-badge-red { background: rgba(239,68,68,0.2); color: #f87171; }
+.sb-footer {
+  margin-top: auto; padding: 14px 16px; border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+}
+.sb-ava { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #c7d2fe; flex-shrink: 0; }
+.sb-uname { font-size: 12px; font-weight: 500; color: #c4bfee; }
+.sb-urole { font-size: 10px; color: #6b63a8; margin-top: 1px; }
+.sb-gear { margin-left: auto; color: #4a4272; cursor: pointer; transition: color 0.13s; }
+.sb-gear:hover { color: #8b82c4; }
+.sb-gear svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; }
+
+/* ─── MAIN ─── */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+
+/* ─── TOPBAR ─── */
+.topbar {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 0 24px; height: 54px; display: flex; align-items: center; gap: 4px; flex-shrink: 0;
+}
+.tab { padding: 7px 16px; border-radius: 20px; font-size: 13px; cursor: pointer; color: var(--text3); border: 1px solid transparent; transition: all 0.13s; font-weight: 400; }
+.tab:hover { background: var(--surface2); color: var(--accent); }
+.tab.active { background: var(--accent); color: #fff; font-weight: 500; }
+.tab-x { margin-left: 5px; opacity: 0.7; font-size: 11px; }
+.topbar-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.notif { width: 34px; height: 34px; border-radius: 9px; background: var(--surface2); border: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: center; position: relative; transition: all 0.13s; }
+.notif:hover { border-color: var(--border2); }
+.notif svg { width: 15px; height: 15px; fill: none; stroke: var(--accent); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.notif-dot { position: absolute; top: 7px; right: 7px; width: 7px; height: 7px; background: #ef4444; border-radius: 50%; border: 2px solid var(--surface); }
+.top-ava { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #c7d2fe; cursor: pointer; }
+
+/* ─── PAGE ─── */
+.page { flex: 1; padding: 22px 24px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; }
+
+.page-head { display: flex; align-items: center; gap: 10px; }
+.page-icon { width: 36px; height: 36px; background: var(--accent); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.page-icon svg { width: 17px; height: 17px; fill: none; stroke: #fff; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.page-title { font-size: 18px; font-weight: 600; color: var(--text); letter-spacing: -0.3px; }
+.breadcrumb { font-size: 12px; color: var(--text3); }
+.head-btns { margin-left: auto; display: flex; gap: 8px; }
+.btn { padding: 8px 16px; border-radius: 9px; font-size: 13px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--surface); color: var(--text); font-family: var(--font); transition: all 0.13s; }
+.btn:hover { border-color: var(--border2); background: var(--surface2); }
+.btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn-primary:hover { background: #4338ca; border-color: #4338ca; }
+.btn-success { background: var(--teal); color: #fff; border-color: var(--teal); }
+.btn-success:hover { background: #0f766e; }
+.btn-sm { padding: 6px 13px; font-size: 12px; }
+
+/* ─── KPI ROW ─── */
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; flex-shrink: 0; }
+.kpi { border-radius: var(--radius); padding: 16px 18px; border: 1px solid; position: relative; overflow: hidden; }
+.kpi-violet { background: var(--kpi-v-bg); border-color: var(--kpi-v-bd); }
+.kpi-teal   { background: var(--kpi-t-bg); border-color: var(--kpi-t-bd); }
+.kpi-amber  { background: var(--kpi-a-bg); border-color: var(--kpi-a-bd); }
+.kpi-blue   { background: var(--kpi-b-bg); border-color: var(--kpi-b-bd); }
+.kpi-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 8px; }
+.kpi-violet .kpi-label { color: var(--kpi-v-lbl); }
+.kpi-teal   .kpi-label { color: var(--kpi-t-lbl); }
+.kpi-amber  .kpi-label { color: var(--kpi-a-lbl); }
+.kpi-blue   .kpi-label { color: var(--kpi-b-lbl); }
+.kpi-val { font-size: 28px; font-weight: 600; letter-spacing: -1px; }
+.kpi-violet .kpi-val { color: var(--kpi-v-val); }
+.kpi-teal   .kpi-val { color: var(--kpi-t-val); }
+.kpi-amber  .kpi-val { color: var(--kpi-a-val); }
+.kpi-blue   .kpi-val { color: var(--kpi-b-val); }
+.kpi-sub { font-size: 11px; margin-top: 4px; }
+.kpi-violet .kpi-sub { color: var(--kpi-v-lbl); }
+.kpi-teal   .kpi-sub { color: var(--kpi-t-lbl); }
+.kpi-amber  .kpi-sub { color: var(--kpi-a-lbl); }
+.kpi-blue   .kpi-sub { color: var(--kpi-b-lbl); }
+.kpi-deco { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); opacity: 0.18; }
+.kpi-deco svg { width: 40px; height: 40px; fill: none; stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+.kpi-violet .kpi-deco svg { stroke: var(--kpi-v-lbl); }
+.kpi-teal   .kpi-deco svg { stroke: var(--kpi-t-lbl); }
+.kpi-amber  .kpi-deco svg { stroke: var(--kpi-a-lbl); }
+.kpi-blue   .kpi-deco svg { stroke: var(--kpi-b-lbl); }
+
+/* ─── GRID ─── */
+.layout { display: grid; grid-template-columns: 340px 1fr; gap: 16px; flex: 1; min-height: 0; align-items: start; }
+
+/* ─── CARD ─── */
+.card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; }
+.card-header { padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); background: var(--surface); }
+.ch-left { display: flex; align-items: center; gap: 8px; }
+.step-dot { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 600; flex-shrink: 0; font-family: var(--mono); transition: all 0.2s; }
+.sd-idle { background: var(--step-idle-bg); color: var(--step-idle-cl); }
+.sd-active { background: var(--accent); color: #fff; }
+.sd-done { background: var(--step-done-bg); color: var(--step-done-cl); }
+.card-title { font-size: 13px; font-weight: 600; color: var(--text); }
+.chip { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; display: inline-block; }
+.chip-violet { background: var(--chip-v-bg); color: var(--chip-v-cl); border: 1px solid var(--chip-v-bd); }
+.chip-green  { background: var(--chip-g-bg); color: var(--chip-g-cl); border: 1px solid var(--chip-g-bd); }
+.chip-amber  { background: var(--chip-a-bg); color: var(--chip-a-cl); border: 1px solid var(--chip-a-bd); }
+
+/* ─── SEARCH ─── */
+.search-zone { padding: 14px 16px 12px; display: flex; gap: 8px; }
+.si { flex: 1; position: relative; }
+.si svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; stroke: var(--text3); fill: none; stroke-width: 1.8; stroke-linecap: round; }
+.si input { width: 100%; padding: 9px 10px 9px 32px; border: 1px solid var(--border); border-radius: 9px; font-size: 13px; background: var(--surface2); color: var(--text); outline: none; font-family: var(--font); }
+.si input:focus { border-color: var(--accent); background: #fff; box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+.si input::placeholder { color: var(--text3); }
+.flt { padding: 9px 28px 9px 10px; border: 1px solid var(--border); border-radius: 9px; font-size: 12px; background: var(--surface2); color: var(--text); outline: none; font-family: var(--font); cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a09ac2' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 8px center; }
+.flt:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+
+/* ─── TOOLS GRID ─── */
+.tg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 14px 14px; }
+.tc { border: 1px solid var(--tc-bd); border-radius: 10px; padding: 11px 12px; cursor: pointer; transition: all 0.13s; background: var(--tc-bg); }
+.tc:hover { border-color: var(--tc-hover-bd); background: var(--tc-hover-bg); }
+.tc.sel { border-color: var(--tc-sel-bd); background: var(--tc-sel-bg); box-shadow: 0 0 0 3px rgba(99,102,241,0.15); }
+.tc-top { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 7px; }
+.tc-ico { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.tc-ico svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.i-violet { background: var(--chip-v-bg); color: var(--chip-v-cl); }
+.i-teal   { background: var(--teal-bg); color: var(--teal); }
+.i-amber  { background: var(--amber-bg); color: var(--amber); }
+.i-blue   { background: var(--kpi-b-bg); color: var(--kpi-b-lbl); }
+.tc-name { font-size: 12px; font-weight: 500; color: var(--text); line-height: 1.3; }
+.tc-code { font-size: 10px; color: var(--text3); font-family: var(--mono); margin-top: 2px; }
+.tc-foot { display: flex; align-items: center; justify-content: space-between; }
+.tc-fam { font-size: 10px; background: var(--tc-fam-bg); color: var(--tc-fam-cl); padding: 2px 7px; border-radius: 8px; font-weight: 500; }
+.tc-stock { font-size: 10px; font-weight: 600; }
+.s-ok { color: var(--teal); }
+.s-low { color: var(--amber); }
+.s-no { color: var(--red); }
+
+.no-data { padding: 36px 16px; text-align: center; color: var(--text3); font-size: 13px; }
+.no-data svg { width: 28px; height: 28px; stroke: var(--border2); fill: none; stroke-width: 1; display: block; margin: 0 auto 10px; }
+
+/* ─── SEL BANNER ─── */
+.sel-banner { margin: 0 16px 12px; border: 1px solid var(--sel-bd); border-radius: 10px; background: var(--sel-bg); padding: 10px 12px; display: flex; align-items: center; gap: 10px; }
+.sel-ico { width: 30px; height: 30px; background: var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.sel-ico svg { width: 13px; height: 13px; fill: none; stroke: #fff; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.sel-name { font-size: 13px; font-weight: 600; color: var(--sel-name); }
+.sel-meta { font-size: 11px; color: var(--sel-meta); margin-top: 1px; }
+.sel-close { margin-left: auto; width: 22px; height: 22px; border-radius: 6px; border: none; background: rgba(99,102,241,0.15); color: var(--accent); cursor: pointer; font-size: 13px; display: flex; align-items: center; justify-content: center; transition: background 0.13s; }
+.sel-close:hover { background: rgba(99,102,241,0.25); }
+
+/* ─── FORM ─── */
+.form-body { transition: opacity 0.2s; }
+.form-body.dim { opacity: 0.35; pointer-events: none; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px 16px; }
+.full { grid-column: 1 / -1; }
+.fld label { display: block; font-size: 10px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+.fld input, .fld select, .fld textarea { width: 100%; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; background: var(--form-input-bg); color: var(--text); outline: none; font-family: var(--font); }
+.fld input:focus, .fld select:focus, .fld textarea:focus { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 3px rgba(99,102,241,0.12); }
+.fld select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23a09ac2' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 9px center; padding-right: 28px; }
+.fld textarea { resize: none; line-height: 1.5; }
+.qty-box { display: flex; align-items: center; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: var(--form-input-bg); }
+.qb { width: 34px; height: 36px; border: none; background: transparent; cursor: pointer; font-size: 16px; color: var(--accent); font-weight: 600; transition: background 0.1s; }
+.qb:hover { background: var(--step-idle-bg); }
+.qi { flex: 1; border: none; text-align: center; font-size: 14px; font-weight: 600; color: var(--text); background: transparent; outline: none; font-family: var(--font); height: 36px; padding: 0; }
+.form-actions { padding: 12px 16px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 8px; background: var(--surface); }
+
+/* ─── TABLE ─── */
+.tbl-wrap { overflow-x: auto; }
+.etbl { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; }
+.etbl th { padding: 11px 16px; text-align: left; font-size: 10px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; background: var(--thead-bg); border-bottom: 1px solid var(--border); }
+.etbl td { padding: 12px 16px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: middle; }
+.etbl tr:last-child td { border-bottom: none; }
+.etbl tr:hover td { background: var(--surface2); }
+.pill { padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; display: inline-block; }
+.p-pend { background: var(--amber-bg); color: var(--kpi-a-lbl); border: 1px solid var(--amber-bd); }
+.p-done { background: var(--green-bg); color: var(--kpi-t-lbl); border: 1px solid var(--green-bd); }
+.ot-tag { font-family: var(--mono); font-size: 11px; background: var(--ot-bg); color: var(--ot-cl); padding: 3px 8px; border-radius: 6px; font-weight: 500; }
+.del-btn { padding: 4px 10px; border-radius: 7px; font-size: 11px; font-weight: 500; cursor: pointer; background: var(--red-bg); color: var(--red); border: 1px solid var(--red-bd); font-family: var(--font); transition: all 0.13s; }
+.del-btn:hover { filter: brightness(1.15); }
+.empty-row td { padding: 48px 16px; text-align: center; color: var(--text3); font-size: 13px; }
+
+/* ─── SAVE BAR ─── */
+.save-bar { padding: 14px 24px; background: var(--surface); border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.save-info { font-size: 12px; color: var(--text2); }
+.save-info strong { color: var(--accent); }
+.save-btns { display: flex; gap: 8px; }
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sb-brand">
+    <div class="sb-logo">
+      <svg class="sb-logo-svg" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+    </div>
+    <div>
+      <div class="sb-app">AlmacénPro</div>
+      <div class="sb-ver">v2.4.1 · 2026</div>
+    </div>
+  </div>
+
+  <div class="sb-section">Principal</div>
+  <div class="sb-item">
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Dashboard
+  </div>
+
+  <div class="sb-section">Almacén</div>
+  <div class="sb-item active">
+    <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+    Entradas
+    <span class="sb-badge">12</span>
+  </div>
+  <div class="sb-item">
+    <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+    Salidas
+    <span class="sb-badge sb-badge-red">5</span>
+  </div>
+  <div class="sb-item">
+    <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    Inventario
+  </div>
+  <div class="sb-item">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+    Reportes
+  </div>
+  <div class="sb-item">
+    <svg viewBox="0 0 24 24"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"/></svg>
+    Familias
+  </div>
+
+  <div class="sb-section">Sistema</div>
+  <div class="sb-item">
+    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+    Usuarios
+  </div>
+  <div class="sb-item">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+    Ajustes
+  </div>
+
+  <div class="sb-footer">
+    <div class="sb-ava">CM</div>
+    <div>
+      <div class="sb-uname">Carlos M.</div>
+      <div class="sb-urole">Jefe de almacén</div>
+    </div>
+    <div class="sb-gear">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <div class="tab">Home</div>
+    <div class="tab">Salidas</div>
+    <div class="tab active">Entradas <span class="tab-x">✕</span></div>
+    <div class="topbar-right">
+      <div class="notif">
+        <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+        <span class="notif-dot"></span>
+      </div>
+      <button id="theme-btn" onclick="toggleTheme()" title="Cambiar tema" style="width:34px;height:34px;border-radius:9px;background:var(--surface2);border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;padding:0;flex-shrink:0;">
+        <svg id="theme-icon" viewBox="0 0 24 24" style="width:15px;height:15px;fill:none;stroke:var(--accent);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+      </button>
+      <div class="top-ava">CM</div>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="page-head">
+      <div class="page-icon">
+        <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+      </div>
+      <div>
+        <div class="page-title">Registro de entradas</div>
+        <div class="breadcrumb">Almacén / Entradas / Nueva entrada</div>
+      </div>
+      <div class="head-btns">
+        <button class="btn btn-sm">Exportar CSV</button>
+        <button class="btn btn-primary btn-sm">+ Nueva entrada</button>
+      </div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi kpi-violet">
+        <div class="kpi-label">Entradas hoy</div>
+        <div class="kpi-val">12</div>
+        <div class="kpi-sub">↑ 3 vs ayer</div>
+        <div class="kpi-deco"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div>
+      </div>
+      <div class="kpi kpi-teal">
+        <div class="kpi-label">Herramientas activas</div>
+        <div class="kpi-val">247</div>
+        <div class="kpi-sub">4 con stock bajo</div>
+        <div class="kpi-deco"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+      </div>
+      <div class="kpi kpi-amber">
+        <div class="kpi-label">Pendientes</div>
+        <div class="kpi-val">5</div>
+        <div class="kpi-sub">Por confirmar</div>
+        <div class="kpi-deco"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      </div>
+      <div class="kpi kpi-blue">
+        <div class="kpi-label">OTs activas</div>
+        <div class="kpi-val">8</div>
+        <div class="kpi-sub">Esta semana</div>
+        <div class="kpi-deco"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+      </div>
+    </div>
+
+    <div class="layout">
+      <div style="display:flex;flex-direction:column;gap:14px">
+
+        <!-- STEP 1: BUSCAR -->
+        <div class="card">
+          <div class="card-header">
+            <div class="ch-left">
+              <span class="step-dot sd-done" id="s1">1</span>
+              <span class="card-title">Buscar herramienta</span>
+            </div>
+            <span id="res-badge" style="display:none" class="chip chip-violet"></span>
+          </div>
+          <div class="search-zone">
+            <div class="si">
+              <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="q" type="text" placeholder="Buscar por nombre, código, familia..." oninput="doSearch(this.value)"/>
+            </div>
+            <select class="flt" id="fam" onchange="doSearch(document.getElementById('q').value)">
+              <option value="">Todas las familias</option>
+              <option>Eléctrico</option>
+              <option>Manual</option>
+              <option>Medición</option>
+              <option>Corte</option>
+            </select>
+          </div>
+          <div id="tg" class="tg" style="display:none"></div>
+          <div id="nd" class="no-data">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Escribe para buscar en el inventario
+          </div>
+        </div>
+
+        <!-- STEP 2: FORMULARIO -->
+        <div class="card">
+          <div class="card-header">
+            <div class="ch-left">
+              <span class="step-dot sd-idle" id="s2">2</span>
+              <span class="card-title">Detalle de la entrada</span>
+            </div>
+          </div>
+          <div class="form-body dim" id="fb">
+            <div id="sel-banner" style="display:none;margin:12px 16px 0" class="sel-banner">
+              <div class="sel-ico" id="si-icon">
+                <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+              </div>
+              <div>
+                <div class="sel-name" id="sn">—</div>
+                <div class="sel-meta" id="sm">—</div>
+              </div>
+              <button class="sel-close" onclick="clearSel()">✕</button>
+            </div>
+            <div class="form-grid">
+              <div class="fld"><label>OT / Orden de trabajo</label><input id="ot" type="text" placeholder="# OT" /></div>
+              <div class="fld"><label>Cantidad</label><div class="qty-box"><button class="qb" onclick="dq(-1)">−</button><input class="qi" id="qty" type="number" value="1" min="1"/><button class="qb" onclick="dq(1)">+</button></div></div>
+              <div class="fld"><label>Estatus</label><select><option>Pendiente</option><option>En tránsito</option><option>Recibido</option><option>Devuelto</option></select></div>
+              <div class="fld"><label>Estado</label><select><option>Nuevo</option><option>Bueno</option><option>Regular</option><option>Para mantenimiento</option></select></div>
+              <div class="fld"><label>Área / Máquina</label><select><option>Seleccionar...</option><option>Línea A</option><option>Línea B</option><option>Taller</option><option>Almacén central</option></select></div>
+              <div class="fld"><label>Parcial</label><select><option>No</option><option>Sí</option></select></div>
+              <div class="fld full"><label>Comentario</label><textarea id="comment" rows="2" placeholder="Observaciones adicionales sobre esta entrada..."></textarea></div>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-sm" onclick="clearSel()">Cancelar</button>
+              <button class="btn btn-success btn-sm" onclick="addEntry()">✓ Registrar entrada</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3: TABLA -->
+      <div class="card">
+        <div class="card-header">
+          <div class="ch-left">
+            <span class="step-dot sd-idle" id="s3">3</span>
+            <span class="card-title">Registros de esta sesión</span>
+          </div>
+          <span id="ecnt" style="display:none" class="chip chip-green"></span>
+        </div>
+        <div class="tbl-wrap">
+          <table class="etbl">
+            <thead>
+              <tr>
+                <th style="width:90px">OT</th>
+                <th>Herramienta</th>
+                <th style="width:60px;text-align:center">Cant.</th>
+                <th style="width:100px">Estatus</th>
+                <th style="width:80px">Acción</th>
+              </tr>
+            </thead>
+            <tbody id="etbody">
+              <tr class="empty-row"><td colspan="5">Los registros aparecerán aquí una vez que comiences a agregar entradas</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="save-bar">
+    <span class="save-info" id="sinfo">Selecciona una herramienta para comenzar</span>
+    <div class="save-btns">
+      <button class="btn btn-sm" onclick="clearSel()">Limpiar</button>
+      <button class="btn btn-primary btn-sm" id="sbtn" style="opacity:0.4;pointer-events:none">Guardar sesión</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const TOOLS=[
+  {id:1,name:"Taladro Bosch 12V",code:"TL-001",fam:"Eléctrico",stock:8,ic:"i-amber",path:'<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>'},
+  {id:2,name:'Llave de torque 1/2"',code:"LT-042",fam:"Manual",stock:2,ic:"i-teal",path:'<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>'},
+  {id:3,name:'Vernier digital 6"',code:"VD-018",fam:"Medición",stock:14,ic:"i-blue",path:'<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>'},
+  {id:4,name:"Sierra caladora Makita",code:"SC-007",fam:"Corte",stock:5,ic:"i-violet",path:'<circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>'},
+  {id:5,name:"Multímetro Fluke 177",code:"MF-033",fam:"Eléctrico",stock:3,ic:"i-amber",path:'<circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>'},
+  {id:6,name:"Cinta métrica 5m",code:"CM-011",fam:"Medición",stock:20,ic:"i-blue",path:'<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>'},
+  {id:7,name:"Llave Allen set 9pc",code:"LA-055",fam:"Manual",stock:0,ic:"i-teal",path:'<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>'},
+  {id:8,name:'Esmeril angular 4.5"',code:"EA-022",fam:"Corte",stock:6,ic:"i-violet",path:'<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>'},
+];
+
+let sel=null,entries=[];
+
+function doSearch(q){
+  const fam=document.getElementById('fam').value;
+  const grid=document.getElementById('tg');
+  const nd=document.getElementById('nd');
+  const badge=document.getElementById('res-badge');
+  if(!q.trim()&&!fam){grid.style.display='none';nd.innerHTML='<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Escribe para buscar en el inventario';nd.style.display='block';badge.style.display='none';return;}
+  const ql=q.toLowerCase();
+  const res=TOOLS.filter(t=>(!q.trim()||(t.name.toLowerCase().includes(ql)||t.code.toLowerCase().includes(ql)||t.fam.toLowerCase().includes(ql)))&&(!fam||t.fam===fam));
+  badge.style.display='inline-block';badge.textContent=res.length+' resultado'+(res.length!==1?'s':'');
+  if(!res.length){grid.style.display='none';nd.innerHTML='<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Sin resultados para "'+q+'"';nd.style.display='block';return;}
+  nd.style.display='none';grid.style.display='grid';
+  grid.innerHTML=res.map(t=>`<div class="tc${sel&&sel.id===t.id?' sel':''}" onclick="pick(${t.id})"><div class="tc-top"><div class="tc-ico ${t.ic}"><svg viewBox="0 0 24 24">${t.path}</svg></div><div><div class="tc-name">${t.name}</div><div class="tc-code">${t.code}</div></div></div><div class="tc-foot"><span class="tc-fam">${t.fam}</span><span class="tc-stock ${t.stock>3?'s-ok':t.stock>0?'s-low':'s-no'}">${t.stock>0?'Stock: '+t.stock:'Sin stock'}</span></div></div>`).join('');
+}
+
+function pick(id){
+  sel=TOOLS.find(t=>t.id===id);
+  doSearch(document.getElementById('q').value);
+  const fb=document.getElementById('fb');
+  fb.classList.remove('dim');
+  document.getElementById('sel-banner').style.display='flex';
+  document.getElementById('sn').textContent=sel.name;
+  document.getElementById('sm').textContent=sel.code+' · '+sel.fam+' · Stock disponible: '+sel.stock;
+  document.getElementById('s2').className='step-dot sd-active';
+  document.getElementById('sinfo').innerHTML='Herramienta seleccionada: <strong>'+sel.name+'</strong>';
+}
+
+function clearSel(){
+  sel=null;
+  document.getElementById('fb').classList.add('dim');
+  document.getElementById('sel-banner').style.display='none';
+  document.getElementById('s2').className='step-dot sd-idle';
+  document.getElementById('sinfo').textContent='Selecciona una herramienta para comenzar';
+  document.getElementById('ot').value='';
+  document.getElementById('qty').value=1;
+  document.getElementById('comment').value='';
+  doSearch(document.getElementById('q').value);
+}
+
+function dq(d){const i=document.getElementById('qty');i.value=Math.max(1,(parseInt(i.value)||1)+d);}
+
+function addEntry(){
+  if(!sel)return;
+  const ot=document.getElementById('ot').value||'—';
+  const qty=document.getElementById('qty').value||1;
+  entries.unshift({id:Date.now(),ot,tool:sel.name,qty});
+  renderTable();
+  document.getElementById('s3').className='step-dot sd-done';
+  document.getElementById('s1').className='step-dot sd-done';
+  const cnt=document.getElementById('ecnt');
+  cnt.style.display='inline-block';cnt.textContent=entries.length+' entrada'+(entries.length!==1?'s':'');
+  const sb=document.getElementById('sbtn');
+  sb.style.opacity='1';sb.style.pointerEvents='all';
+  clearSel();
+}
+
+function renderTable(){
+  document.getElementById('etbody').innerHTML=entries.length?entries.map(e=>`<tr><td><span class="ot-tag">${e.ot}</span></td><td>${e.tool}</td><td style="text-align:center;font-weight:600">${e.qty}</td><td><span class="pill p-pend">Pendiente</span></td><td><button class="del-btn" onclick="removeEntry(${e.id})">Eliminar</button></td></tr>`).join(''):'<tr class="empty-row"><td colspan="5">Los registros aparecerán aquí</td></tr>';
+}
+
+function removeEntry(id){
+  entries=entries.filter(e=>e.id!==id);
+  renderTable();
+  const cnt=document.getElementById('ecnt');
+  if(!entries.length){cnt.style.display='none';document.getElementById('s3').className='step-dot sd-idle';document.getElementById('sbtn').style.opacity='0.4';document.getElementById('sbtn').style.pointerEvents='none';}
+  else{cnt.textContent=entries.length+' entrada'+(entries.length!==1?'s':'');}
+}
+
+const SUN='<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+const MOON='<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>';
+
+function toggleTheme(){
+  const isDark=document.documentElement.classList.toggle('dark');
+  document.getElementById('theme-icon').innerHTML=isDark?SUN:MOON;
+  localStorage.setItem('theme',isDark?'dark':'light');
+}
+
+// Apply saved theme on load
+if(localStorage.getItem('theme')==='dark'){
+  document.documentElement.classList.add('dark');
+  document.addEventListener('DOMContentLoaded',()=>{
+    const el=document.getElementById('theme-icon');
+    if(el)el.innerHTML=SUN;
+  });
+}
+</script>
+</body>
+</html>

@@ -2,11 +2,13 @@
 
 :root,
 [data-theme="light"] {
-  --color-bg-surface: #f4f3f8;
-  --color-bg-page: #FFFFFF;
-  --color-bg-sidebar: #EAE6FF;
-  --color-bg-elevated: #F8F6FF;
+  --color-bg-surface: #ffffff;
+  --color-bg-page: #f2f0fc;
+  --color-bg-sidebar: #130e2e;
+  --color-bg-sidebar-hover: #3f3b7c;
+  --color-accent-neon: #8B5CF6;
 
+  --color-bg-elevated: #F8F6FF;
   --color-border-default: #D6D0FF;
   --color-border-strong: #B8B0F0;
 
@@ -42,6 +44,13 @@
   --color-danger-subtle: #FFE5E5;
   --color-danger-border: #D50000;
 
+
+  /* KPI Colors */
+  --kpi-v-bg:#f5f3ff; --kpi-v-bd:#c4b5fd; --kpi-v-lbl:#7c3aed; --kpi-v-val:#3730a3;
+  --kpi-t-bg:#f0fdf9; --kpi-t-bd:#99f6e4; --kpi-t-lbl:#0f766e; --kpi-t-val:#134e4a;
+  --kpi-a-bg:#fffbeb; --kpi-a-bd:#fcd34d; --kpi-a-lbl:#b45309; --kpi-a-val:#78350f;
+  --kpi-b-bg:#eff6ff; --kpi-b-bd:#93c5fd; --kpi-b-lbl:#1d4ed8; --kpi-b-val:#1e3a8a;
+
   --color-shadow-default: 0 4px 25px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
@@ -49,8 +58,10 @@
   --color-bg-page: #0D0D14;
   --color-bg-surface: #16162A;
   --color-bg-sidebar: #12121F;
-  --color-bg-elevated: #1E1E38;
+  --color-bg-sidebar-hover: #1e1e38;
+  --color-accent-neon: #A78BFA;
 
+  --color-bg-elevated: #1E1E38;
   --color-border-default: #2A2A4A;
   --color-border-strong: #3C3C60;
 
@@ -67,6 +78,12 @@
   --color-accent-hover: #C4ADFF;
   --color-accent-text: #0D0826;
   --color-accent-subtle: #1E1E38;
+
+  /* KPI Colors Dark */
+  --kpi-v-bg:#13112a; --kpi-v-bd:#312c6a; --kpi-v-lbl:#a5b4fc; --kpi-v-val:#c7d2fe;
+  --kpi-t-bg:#0a1f1d; --kpi-t-bd:#134e4a; --kpi-t-lbl:#5eead4; --kpi-t-val:#99f6e4;
+  --kpi-a-bg:#180f00; --kpi-a-bd:#3d2f00; --kpi-a-lbl:#fcd34d; --kpi-a-val:#fef08a;
+  --kpi-b-bg:#0d1526; --kpi-b-bd:#1e3a6e; --kpi-b-lbl:#93c5fd; --kpi-b-val:#bfdbfe;
 
   --color-success-default: #00E676;
   --color-success-hover: #00C853;
@@ -220,12 +237,12 @@ body {
   padding: 0;
   height: 100vh;
   width: 100vw;
-  background: var(--color-bg-surface);
+  background: var(--color-bg-page);
   color: var(--color-text-primary);
 }
 
 .ComponentGeneral {
-  background-color: var(--color-bg-surface);
+  background-color: var(--color-bg-page);
   width: 100%;
   height: 100%;
   margin: 0;

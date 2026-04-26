@@ -14,21 +14,26 @@ const cantidad = defineModel('Cantidad', { type: Number })
 <style scoped>
 .header-buttons {
     display: flex;
-    justify-content: center;
-    gap: 10px;
-    width: 500px;
-    height: 50px;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    height: 38px;
     background-color: var(--color-bg-page);
-    border-radius: 10px;
-    padding: 10px;
-    margin-top: 5px;
-    box-shadow: var(--color-shadow-default);
-    border: 1px solid var(--color-border-strong);
+    border-radius: 8px;
+    padding: 4px 8px;
+    box-sizing: border-box;
+    border: 1px solid var(--color-border-default);
 }
 
-input {
-    background-color: var(--color-bg-page);
-    padding-inline: 20px;
+.input-search {
+    flex-grow: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    color: var(--color-text-primary);
+    font-size: 13px;
+    padding: 0;
+    min-width: 0; /* Permite que el input se encoja si es necesario */
 }
 
 button {

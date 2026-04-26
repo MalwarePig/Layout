@@ -24,20 +24,18 @@ console.log(props.pagination)
 
 <style scoped>
 .tableContainer {
-    display: flex;
-    width: 95%;
-    height: 40%;
-    margin: 5px auto;
-    padding: 10px;
-    background-color: var(--color-bg-page);
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    box-shadow: var(--color-shadow-default);
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
 }
 
 /* css para el header de la tabla */
 :deep(.n-data-table-th) {
-    background-color: var(--color-bg-page);
+    background-color: var(--color-bg-surface);
     color: var(--color-text-tertiary);
     font-weight: bold;
     padding: 6px 8px;

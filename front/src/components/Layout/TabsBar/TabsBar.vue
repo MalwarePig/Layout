@@ -34,9 +34,7 @@ function setActiveTab(tabId, tabName, tabLink) {
 
 <template>
     <div class="tabs-bar">
-        <div class="logo">
-            <img src="../../../../public/logo/Logo.svg" alt="Logo">
-        </div>
+        <!-- Logo eliminado de aquí -->
 
         <div class="tabs-wrapper">
             <div class="tabs-container">
@@ -68,7 +66,7 @@ function setActiveTab(tabId, tabName, tabLink) {
     justify-content: space-between;
     align-items: center;
     background-color: var(--color-bg-surface);
-    height: 75px;
+    height: 50px;
     width: 100%;
     padding: 0 30px;
     box-sizing: border-box;
@@ -76,18 +74,6 @@ function setActiveTab(tabId, tabName, tabLink) {
     border-bottom: 1px solid var(--color-border-default);
     position: relative;
     z-index: 100;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    width: 200px;
-}
-
-img {
-    height: 40px;
-    width: auto;
 }
 
 .tabs-wrapper {
@@ -115,8 +101,8 @@ img {
     /* Controla el espacio perfecto entre texto y la X */
     background: transparent;
     border: none;
-    height: 42px;
-    padding: 0 20px;
+    height: 25px;
+    padding: 0 15px;
     /* Un poco menos de padding porque el gap ya da espacio */
     cursor: pointer;
     font-size: 0.95rem;

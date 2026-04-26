@@ -68,7 +68,12 @@ const menuItems = ref([
 <template>
     <div class="sidebar-container" :class="{ 'expanded': isExpanded }">
         <div class="mac-dock">
-            <!-- Botón Hamburguesa: Alimenta isExpanded -->
+            <!-- LOGO SUPERIOR -->
+            <div class="sidebar-logo">
+                <img src="/logo/Logo.svg" alt="Logo" :class="{ 'small': !isExpanded }">
+            </div>
+
+            <!-- Botón Hamburguesa -->
             <button class="hamburger" @click="toggleSidebar" :aria-expanded="isExpanded">
                 <span class="bar top-bar" :class="{ 'open': isExpanded }"></span>
                 <span class="bar mid-bar" :class="{ 'open': isExpanded }"></span>
@@ -114,7 +119,7 @@ const menuItems = ref([
                             </span>
                             <transition name="fade">
                                 <span class="label" v-show="isExpanded">{{ isDarkMode ? 'Modo Claro' : 'Modo Oscuro'
-                                    }}</span>
+                                }}</span>
                             </transition>
                         </div>
                     </li>
@@ -136,7 +141,7 @@ const menuItems = ref([
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     box-shadow: 0 4px 25px rgba(0, 0, 0, 0.04), 0 1px 3px rgba(0, 0, 0, 0.02);
     border-bottom: 1px solid var(--color-border-default);
-    
+
     /* Añadido para empujar el contenido */
     transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
@@ -146,7 +151,8 @@ const menuItems = ref([
     top: 0;
     left: 0;
     bottom: 0;
-    background: var(--color-bg-page);
+    color: var(--color-text-secondary);
+    background: var(--color-bg-sidebar);
     backdrop-filter: blur(20px) saturate(150%);
     -webkit-backdrop-filter: blur(20px) saturate(150%);
     border-right: 1px solid rgba(200, 200, 200, 0.4);
@@ -170,6 +176,25 @@ const menuItems = ref([
     width: 200px;
 }
 
+.sidebar-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 10px 0;
+    transition: all 0.3s ease;
+}
+
+.sidebar-logo img {
+    height: 40px;
+    width: auto;
+    transition: all 0.3s ease;
+}
+
+.sidebar-logo img.small {
+    height: 28px;
+}
+
 .hamburger {
     background: transparent;
     border: none;
@@ -179,7 +204,7 @@ const menuItems = ref([
     justify-content: space-between;
     height: 18px;
     width: 22px;
-    margin: 5px 0 30px 19px;
+    margin: 5px 0 25px 19px;
     padding: 0;
     z-index: 10;
     transition: all 0.3s ease;
@@ -189,7 +214,7 @@ const menuItems = ref([
 .hamburger .bar {
     width: 100%;
     height: 2px;
-    background-color: var(--color-text-primary);
+    background-color: var(--color-text-secondary);
     border-radius: 10px;
     transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
     transform-origin: left center;
@@ -247,15 +272,15 @@ const menuItems = ref([
 }
 
 .menu-item:hover {
-    background-color: var(--color-bg-surface);
-    color: var(--color-accent-default);
-    box-shadow: 0 4px 14px rgba(92, 63, 212, 0.12), 0 1px 4px rgba(0, 0, 0, 0.06);
-    border: 1px solid var(--color-border-default);
+    background-color: var(--color-bg-sidebar-hover);
+    color: #ffffff;
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.3);
     z-index: 2;
 }
 
 .sidebar-container.expanded .menu-item:hover {
-    background: var(--color-bg-elevated);
+    background-color: var(--color-bg-sidebar-hover);
 }
 
 .icon {
@@ -264,16 +289,28 @@ const menuItems = ref([
     justify-content: center;
     align-items: center;
     min-width: 32px;
+    color: rgba(255, 255, 255, 0.7);
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+    transition: color 0.3s ease;
+}
+
+.menu-item:hover .icon {
+    color: #ffffff;
 }
 
 .label {
     margin-left: 14px;
     font-size: 0.95rem;
-    color: var(--color-text-primary);
+    color: rgba(255, 255, 255, 0.8);
     font-weight: 500;
     white-space: nowrap;
+    transition: color 0.3s ease;
 }
+
+.menu-item:hover .label {
+    color: #ffffff;
+}
+
 
 .chevron {
     margin-left: auto;
@@ -310,20 +347,21 @@ const menuItems = ref([
     position: absolute;
     top: 0;
     left: 100%;
-    margin-left: 2px;
+    margin-left: 10px;
 
 
-    background-color: var(--color-bg-surface);
-    box-shadow: 0 4px 14px rgba(92, 63, 212, 0.12), 0 1px 4px rgba(0, 0, 0, 0.06);
-    border: 1px solid var(--color-border-default);
-    border-radius: 8px;
-    min-width: 170px;
+    background-color: rgba(19, 14, 46, 0.98);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 15px rgba(139, 92, 246, 0.1);
+    border: 1px solid rgba(139, 92, 246, 0.4); /* Borde Neon Morado */
+    border-radius: 12px;
+    min-width: 180px;
     z-index: 2000;
 
     opacity: 0;
     visibility: hidden;
-    transform: translateX(-10px);
-    transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
+    transform: translateX(-12px);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); /* Efecto rebote suave */
 }
 
 
@@ -335,13 +373,14 @@ const menuItems = ref([
 }
 
 .submenu-title {
-    padding: 8px 18px;
+    padding: 10px 18px;
     font-size: 0.7rem;
     text-transform: uppercase;
     color: var(--color-text-tertiary);
-    letter-spacing: 0.5px;
-    border-bottom: 1px solid var(--color-border-default);
-    margin-bottom: 4px;
+    opacity: 0.7;
+    letter-spacing: 1px;
+    border-bottom: 1px solid rgba(214, 208, 255, 0.05);
+    margin-bottom: 6px;
     pointer-events: none;
 }
 
@@ -349,14 +388,15 @@ const menuItems = ref([
     padding: 10px 18px;
     cursor: pointer;
     transition: all 0.2s ease;
-    color: var(--color-text-secondary);
+    color: rgba(255, 255, 255, 0.7); /* Texto claro para fondo oscuro */
     font-size: 0.85rem;
     font-weight: 500;
 }
 
 .submenu-item:hover {
-    background-color: var(--color-bg-elevated);
-    color: var(--color-text-primary);
-    padding-left: 22px;
+    background-color: var(--color-bg-sidebar-hover);
+    color: #ffffff;
+    padding-left: 24px;
 }
+
 </style>
