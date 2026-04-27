@@ -262,3 +262,41 @@ body {
   color: var(--color-text-primary);
   background-color: var(--color-bg-surface);
 }
+
+
+/* 
+  :deep() permite aplicar estilos a clases que inyecta una librería externa (Naive UI).
+  Sin :deep(), Vue ignoraría estas reglas porque protege el CSS local de cada componente.
+*/
+
+/* 1. Controla la estructura interna del form-item cuando el label está arriba */
+:deep(.n-form-item.n-form-item--top-labelled) {
+    /* Fuerza a que el label tome solo su altura natural (auto) y el input tome el resto (1fr) */
+    grid-template-rows: auto 1fr !important; 
+}
+
+/* 2. El contenedor principal de cada campo del formulario */
+:deep(.n-form-item) {
+    /* Elimina el margen gigante que pone Naive UI por defecto debajo de cada input */
+    margin-bottom: 0 !important; 
+}
+
+/* 3. Controla el texto de la etiqueta (Label) "Nombre", "Descripción", etc. */
+:deep(.n-form-item .n-form-item-label) {
+    font-size: 11px !important; /* Texto pequeñito */
+    padding: 0 0 2px 0 !important; /* Deja solo 2px de espacio entre el texto y el cajón del input */
+    min-height: auto !important; /* Elimina restricciones de altura por defecto */
+    line-height: 1 !important; /* Quita el interlineado ancho para hacerlo más compacto */
+}
+
+/* 4. Es el contenedor (blank) que envuelve directamente al cajón de texto (input) */
+:deep(.n-form-item .n-form-item-blank) {
+    /* Permite que el input se pueda encoger más de lo que Naive UI normalmente permite */
+    min-height: auto !important; 
+}
+
+/* 5. Es el espacio reservado donde Naive UI dibuja las letras rojas de "Campo requerido" */
+:deep(.n-form-item-feedback-wrapper) {
+    /* Lo desaparecemos del mapa para recuperar todo ese espacio en blanco perdido */
+    display: none !important; 
+}

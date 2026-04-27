@@ -90,7 +90,7 @@ function selectArticle() {
 
                         <n-form-item label="Comentario">
                             <n-input style="width: 180px;" show-count :maxlength="100"
-                                     :count-graphemes="countGraphemes" />
+                                :count-graphemes="countGraphemes" />
                         </n-form-item>
 
                         <!-- BOTÓN INTEGRADO EN LA FILA -->

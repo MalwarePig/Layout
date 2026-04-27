@@ -1,12 +1,16 @@
 <script setup>
-import { SquareMousePointer } from 'lucide-vue-next';
+const props = defineProps({
+    text: String,
+    icon: Object
+})
+
 /* function handleClick() {
     alert("hola")
 } */
 </script>
 <template>
     <button @click="handleClick">
-        <SquareMousePointer />
+        <component :is="icon" />
     </button>
 </template>
 

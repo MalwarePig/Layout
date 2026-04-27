@@ -1,23 +1,70 @@
 <script setup>
-import { h, ref } from 'vue'
-import { NInput, NInputNumber, NSelect, NDivider, NForm, NFormItem, NButton, useMessage } from "naive-ui"
-import { Box, Layers, Clock, FileText, ArrowDownToLine, Save } from 'lucide-vue-next'
+import { h, ref, watch } from 'vue'
+import { NInput, NInputNumber, NSelect, NDivider, NForm, NFormItem, NButton, useMessage, NAutoComplete } from "naive-ui"
+import { Box, Layers, Clock, FileText, ArrowDownToLine, Save, ArrowRightToLine, ArrowDownToDot } from 'lucide-vue-next'
 import btnSearch from '../../../UI/Buttons/ButtonSearch/ButtonSearch.vue'
-import btnFunction from '../../../UI/Buttons/ButtonAction/ButtonAction.vue'
 import CustomTable from "../../../UI/CustomTable/CustomTable.vue"
 import { useConfig } from "./config"
+import Kpis from '../../../UI/Cards/Kpis/Kpis.vue'
 
-const { columns1, pagination1, columns2, dataSalida, selEstados, selFamilia, selMaquina, selParcial } = useConfig()
+const { columnsTable, paginationTable, selEstados, selFamilia, selMaquina, selParcial } = useConfig((row) => {
+    dataTable.value = dataTable.value.filter(item => item.id !== row.id)
+})
 
-const data = ref([])
-const Cantidad = ref(10)
-const valEstatus = ref(null)
-const valEstado = ref(null)
+const dataTable = ref([]) // datos de la tabla
+const valEstatus = ref(null) // valor del select estatus
+const valEstado = ref(null) // valor del select estado
 
-async function obtenerDatosTabla() {
-    const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=' + Cantidad.value)
+const busquedaPadre = ref("") // valor del input search
+let timeout = null // timeout para debounce y no buscar en cada key
+let selectOptions = ref([]) // options del autocomplete
+
+const formValues = ref({
+    id: "",
+    nombre: "",
+    descripcion: "",
+    cantidad: "",
+    ot: "",
+    estatus: "",
+    estado: "",
+    responsable: "",
+    comentario: ""
+})
+
+watch(busquedaPadre, (newValue) => {
+    clearTimeout(timeout)
+    timeout = setTimeout(() => {
+        if (!newValue) return
+        obtenerDatosTabla(newValue)
+    }, 1000)
+})
+
+async function obtenerDatosTabla(newValue) {
+    if (!newValue) return
+    const res = await fetch('http://localhost:3000/search?q=' + newValue.toLowerCase())
+
+    if (!res.ok) {
+        console.log('No encontrado')
+        return
+    }
+
     const responseData = await res.json()
-    data.value = responseData.results
+    selectOptions.value = []
+
+    responseData.results.map((item) => {
+        /* Llenado de options para el autocomplete */
+        selectOptions.value.push({
+            label: item.Nombre,
+            value: {
+                id: item.id,
+                Nombre: item.Nombre,
+                Descripcion: item.Descripcion,
+                Cantidad: item.Cantidad,
+                Estatus: item.Estatus,
+            }
+        })
+    })
+
 }
 
 /* NOTIFICACIONES */
@@ -26,45 +73,77 @@ function handleClick() {
     message.success('Hello')
 }
 
-/* UTILIDADES */
+/* UTILIDADES mostrar contador en input */
 const countGraphemes = (s) => {
     return Array.from(s).length
 }
 
-function selectArticle() {
-    console.log('selectArticle')
+
+function getForm(val) {
+    formValues.value.id = val.id
+    formValues.value.nombre = val.Nombre
+    formValues.value.descripcion = val.Descripcion
+    formValues.value.cantidad = val.Cantidad
+    formValues.value.estatus = val.Estatus
+    formValues.value.estado = val.Estatus
+    formValues.value.comentario = val.Descripcion
 }
 
+
+// Variable para guardar las opciones del autocomplete
+const personal = ref([])
+
+// Para observar una propiedad específica de un objeto reactivo, 
+// se debe usar una función getter: () => formValues.value.responsable
+watch(() => formValues.value.responsable, (newValue) => {
+    console.log(newValue)
+    if (newValue) {
+        getPersonal(newValue)
+    } else {
+        personal.value = [] // Limpiar si está vacío
+    }
+})
+
+async function getPersonal(newValue) {
+    const res = await fetch('http://localhost:3000/personal?q=' + newValue.toLowerCase())
+    const responseData = await res.json()
+    console.log(responseData)
+
+    // Naive UI auto-complete espera un formato con 'label' y 'value'
+    personal.value = responseData.results.map(persona => ({
+        label: persona.Nombre + ' (' + persona.Planta + ')',
+        value: persona
+    }))
+}
+
+const handleResponsableSelect = (val) => {
+    console.log('El responsable es:', val.Nombre)
+    // Aquí puedes asignar el valor completo (objeto) a tu formulario
+    formValues.value.responsable = val.Nombre
+}
+
+
+function addToList() {
+    dataTable.value.push({
+        id: formValues.value.id,
+        Nombre: formValues.value.nombre,
+        Descripcion: formValues.value.descripcion,
+        Cantidad: formValues.value.cantidad,
+        Estatus: formValues.value.estatus,
+    })
+
+    message.success('Herramienta agregada a la lista')
+}
 </script>
 
 <template>
     <div class="ComponentGeneral">
         <!-- KPI CARDS -->
         <div class="Cards">
-            <div class="kpi kpi-violet">
-                <div class="kpi-label">Entradas hoy</div>
-                <div class="kpi-val">12</div>
-                <div class="kpi-sub">↑ 3 vs ayer</div>
-                <div class="kpi-deco"><Box :size="56" /></div>
-            </div>
-            <div class="kpi kpi-teal">
-                <div class="kpi-label">Herramientas activas</div>
-                <div class="kpi-val">247</div>
-                <div class="kpi-sub">4 con stock bajo</div>
-                <div class="kpi-deco"><Layers :size="56" /></div>
-            </div>
-            <div class="kpi kpi-amber">
-                <div class="kpi-label">Pendientes</div>
-                <div class="kpi-val">5</div>
-                <div class="kpi-sub">Por confirmar</div>
-                <div class="kpi-deco"><Clock :size="56" /></div>
-            </div>
-            <div class="kpi kpi-blue">
-                <div class="kpi-label">OTs activas</div>
-                <div class="kpi-val">8</div>
-                <div class="kpi-sub">Esta semana</div>
-                <div class="kpi-deco"><FileText :size="56" /></div>
-            </div>
+            <Kpis skin="violet" label="Entradas hoy" val="12" sub="↑ 3 vs ayer" :icon="Box" />
+            <Kpis skin="teal" label="Herramientas activas" val="247" sub="4 con stock bajo" :icon="Layers" />
+            <Kpis skin="amber" label="Pendientes" val="5" sub="Por confirmar" :icon="Clock" />
+            <Kpis skin="blue" label="OTs activas" val="8" sub="Esta semana" :icon="FileText" />
         </div>
 
         <!-- CUERPO PRINCIPAL -->
@@ -78,8 +157,11 @@ function selectArticle() {
                         <span class="card-title-mini">Buscar Herramienta</span>
                     </div>
                     <div class="search-box">
-                        <btnSearch v-model:Cantidad="Cantidad" @click="obtenerDatosTabla" />
+                        <btnSearch v-model:busquedaHijo="busquedaPadre" :options="selectOptions" @select="handleSelect"
+                            @setForm="getForm" />
                     </div>
+
+
                 </div>
 
                 <!-- FORMULARIO -->
@@ -88,9 +170,12 @@ function selectArticle() {
                         <span class="step-dot">2</span>
                         <span class="card-title-mini">Detalle de Salida</span>
                     </div>
-                    <n-form label-placement="top" class="form-grid">
-                        <n-form-item label="Descripción">
-                            <n-input placeholder="..." />
+                    <n-form label-placement="top" class="form-grid" :show-feedback="false" size="small">
+                        <n-form-item label="Nombre" class="full-width">
+                            <n-input placeholder="..." :value="formValues.nombre" />
+                        </n-form-item>
+                        <n-form-item label="Descripción" class="full-width">
+                            <n-input placeholder="..." :value="formValues.descripcion" />
                         </n-form-item>
                         <n-form-item label="Cantidad">
                             <n-input-number placeholder="0" />
@@ -104,16 +189,27 @@ function selectArticle() {
                         <n-form-item label="Estado">
                             <n-select v-model:value="valEstado" :options="selEstados" placeholder="Seleccionar..." />
                         </n-form-item>
-                        <n-form-item label="Responsable">
-                            <n-input placeholder="..." />
+                        <n-form-item label="Responsable" class="full-width">
+                            <n-auto-complete placeholder="Escribe un nombre..." v-model:value="formValues.responsable"
+                                :options="personal" @select="handleResponsableSelect" />
                         </n-form-item>
                         <n-form-item label="Comentario" class="full-width">
-                            <n-input type="textarea" placeholder="..." show-count :maxlength="100" />
+                            <n-input type="textarea" placeholder="..." show-count :maxlength="100"
+                                v-model:value="formValues.comentario" />
                         </n-form-item>
                     </n-form>
                     <div class="form-actions">
-                        <n-button type="primary" @click="handleClick" block size="small">
-                            <template #icon><ArrowDownToLine /></template>
+                        <n-button ghost @click="addToList" size="medium" style="flex: 1">
+                            <template #icon>
+                                <ArrowRightToLine />
+                            </template>
+                            Agregar a la lista
+                        </n-button>
+
+                        <n-button ghost @click="addToList" size="medium" style="flex: 1">
+                            <template #icon>
+                                <ArrowRightToLine />
+                            </template>
                             Agregar a la lista
                         </n-button>
                     </div>
@@ -128,7 +224,7 @@ function selectArticle() {
                         <span class="card-title-mini">Registros de esta sesión</span>
                     </div>
                     <div class="table-wrapper">
-                        <CustomTable :columns="columns2" :data="dataSalida" />
+                        <CustomTable :columns="columnsTable" :dataTable="dataTable" :pagination="paginationTable" />
                     </div>
                 </div>
             </div>
@@ -137,12 +233,14 @@ function selectArticle() {
         <!-- FOOTER DE ACCIONES -->
         <div class="Contenedor-inferior">
             <div class="footer-info">
-                <span>Sesión actual: <strong>{{ dataSalida.length }} artículos</strong></span>
+                <span>Sesión actual: <strong>{{ dataTable.length }} artículos</strong></span>
             </div>
             <div class="footer-btns">
                 <n-button secondary @click="console.log('Limpiar')">Limpiar</n-button>
                 <n-button type="primary" @click="console.log('Guardar')">
-                    <template #icon><Save /></template>
+                    <template #icon>
+                        <Save />
+                    </template>
                     Guardar Sesión
                 </n-button>
             </div>
@@ -171,88 +269,21 @@ function selectArticle() {
     flex-shrink: 0;
 }
 
-.kpi {
-    border-radius: 12px;
-    padding: 20px 24px;
-    border: 1px solid;
-    position: relative;
-    overflow: hidden;
-    box-shadow: var(--color-shadow-default);
-    min-height: 110px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    transition: transform 0.2s ease;
-}
-
-.kpi:hover {
-    transform: translateY(-2px);
-}
-
-.kpi-violet { background: var(--kpi-v-bg); border-color: var(--kpi-v-bd); }
-.kpi-teal   { background: var(--kpi-t-bg); border-color: var(--kpi-t-bd); }
-.kpi-amber  { background: var(--kpi-a-bg); border-color: var(--kpi-a-bd); }
-.kpi-blue   { background: var(--kpi-b-bg); border-color: var(--kpi-b-bd); }
-
-.kpi-label { 
-    font-size: 11px; 
-    font-weight: 700; 
-    text-transform: uppercase; 
-    letter-spacing: 0.05em; 
-    margin-bottom: 8px; 
-}
-.kpi-violet .kpi-label { color: var(--kpi-v-lbl); }
-.kpi-teal   .kpi-label { color: var(--kpi-t-lbl); }
-.kpi-amber  .kpi-label { color: var(--kpi-a-lbl); }
-.kpi-blue   .kpi-label { color: var(--kpi-b-lbl); }
-
-.kpi-val { 
-    font-size: 32px; 
-    font-weight: 700; 
-    line-height: 1; 
-}
-.kpi-violet .kpi-val { color: var(--kpi-v-val); }
-.kpi-teal   .kpi-val { color: var(--kpi-t-val); }
-.kpi-amber  .kpi-val { color: var(--kpi-a-val); }
-.kpi-blue   .kpi-val { color: var(--kpi-b-val); }
-
-.kpi-sub { 
-    font-size: 13px; 
-    margin-top: 8px; 
-    font-weight: 500; 
-}
-.kpi-violet .kpi-sub { color: var(--kpi-v-lbl); }
-.kpi-teal   .kpi-sub { color: var(--kpi-t-lbl); }
-.kpi-amber  .kpi-sub { color: var(--kpi-a-lbl); }
-.kpi-blue   .kpi-sub { color: var(--kpi-b-lbl); }
-
-.kpi-deco { 
-    position: absolute; 
-    right: 12px; 
-    top: 50%;
-    transform: translateY(-50%);
-    opacity: 0.2; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.kpi-violet .kpi-deco { color: var(--kpi-v-lbl); }
-.kpi-teal   .kpi-deco { color: var(--kpi-t-lbl); }
-.kpi-amber  .kpi-deco { color: var(--kpi-a-lbl); }
-.kpi-blue   .kpi-deco { color: var(--kpi-b-lbl); }
 
 /* CUERPO PRINCIPAL */
 .Cuerpo {
     display: grid;
-    grid-template-columns: 350px 1fr;
-    gap: 12px;
+    grid-template-columns: repeat(4, 1fr);
+    /* Misma cuadrícula exacta que arriba */
+    gap: 16px;
     flex-grow: 1;
     min-height: 0;
     width: 100%;
 }
 
 .Contenedor-izquierdo {
+    grid-column: span 1;
+    /* Ocupa exactamente 1 columna */
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -272,7 +303,8 @@ function selectArticle() {
 }
 
 .Formulario {
-    flex: 1; /* Crece para llenar el espacio vertical */
+    flex: 1;
+    /* Crece para llenar el espacio vertical */
     display: flex;
     flex-direction: column;
     min-height: 0;
@@ -307,29 +339,34 @@ function selectArticle() {
 .form-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    flex: 1; /* Usa el espacio disponible */
+    column-gap: 10px;
+    row-gap: 8px !important;
+    align-content: start;
+    flex: 1;
     min-height: 0;
 }
 
-:deep(.n-form-item) {
-    margin-bottom: 4px;
-}
 
-:deep(.n-form-item-label) {
-    font-size: 11px;
-}
+
 
 .full-width {
     grid-column: 1 / span 2;
 }
 
 .form-actions {
-    margin-top: auto; /* Anclado al final del card */
+    margin-top: auto;
+    /* Anclado al final del card */
     padding-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding-top: 20px;
 }
 
 .Contenedor-derecho {
+    grid-column: span 3;
+    /* Ocupa exactamente las 3 columnas restantes */
     height: 100%;
     min-height: 0;
 }
@@ -340,13 +377,11 @@ function selectArticle() {
     flex-direction: column;
 }
 
+
 .table-wrapper {
     flex: 1;
     overflow: hidden;
-}
-
-:deep(.n-data-table) {
-    height: 100%;
+    padding-bottom: 10px;
 }
 
 /* FOOTER */
@@ -372,7 +407,3 @@ function selectArticle() {
     gap: 10px;
 }
 </style>
-
-
-
-

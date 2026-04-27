@@ -4,21 +4,17 @@ import { NDataTable } from "naive-ui"
 /* import { columns, data, pagination } from "./exampleData" */
 
 const props = defineProps({
-    data: Array,
+    dataTable: Array,
     columns: Array,
     pagination: Object
 })
-
-console.log(props.data)
-console.log(props.columns)
-console.log(props.pagination)
 </script>
 
 <template>
     <div class="tableContainer">
         <!-- flex-height hace que la tabla se ajuste a la altura del contenedor -->
         <!-- striped hace que las filas de la tabla tengan un color alterno -->
-        <n-data-table :columns="columns" :data="data" flex-height striped :pagination="pagination" />
+        <n-data-table :columns="columns" :data="dataTable" flex-height striped :pagination="pagination" />
     </div>
 </template>
 
@@ -58,5 +54,10 @@ console.log(props.pagination)
 /* css para el control de paginacion */
 :deep(.n-data-table .n-data-table__pagination) {
     padding-right: 10px;
+}
+
+/* css para que la tabla ocupe toda la altura del contenedor */
+:deep(.n-data-table) {
+    height: 100%;
 }
 </style>
