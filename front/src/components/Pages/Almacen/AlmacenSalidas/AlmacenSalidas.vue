@@ -1,35 +1,40 @@
 <script setup>
 import { h, ref, watch } from 'vue'
 import { NInput, NInputNumber, NSelect, NDivider, NForm, NFormItem, NButton, useMessage, NAutoComplete } from "naive-ui"
-import { Box, Layers, Clock, FileText, ArrowDownToLine, Save, ArrowRightToLine, ArrowDownToDot } from 'lucide-vue-next'
+import { Box, Layers, Clock, FileText, ArrowDownToLine, Save, ArrowRightToLine, Eraser } from 'lucide-vue-next'
 import btnSearch from '../../../UI/Buttons/ButtonSearch/ButtonSearch.vue'
 import CustomTable from "../../../UI/CustomTable/CustomTable.vue"
 import { useConfig } from "./config"
 import Kpis from '../../../UI/Cards/Kpis/Kpis.vue'
 
-const { columnsTable, paginationTable, selEstados, selFamilia, selMaquina, selParcial } = useConfig((row) => {
-    dataTable.value = dataTable.value.filter(item => item.id !== row.id)
-})
-
-const dataTable = ref([]) // datos de la tabla
+const { columnsTable, paginationTable, selEstados, selFamilia, selMaquina, selParcial } = useConfig(onDeleteRow)
+const dataTable = ref([]) // datos de la tabla 
 const valEstatus = ref(null) // valor del select estatus
-const valEstado = ref(null) // valor del select estado
-
+const valEstado = ref(null) // valor del select estado 
+const valPersonal = ref([]) // valor del select personal
 const busquedaPadre = ref("") // valor del input search
+const valTotalRegistros = ref(0) // valor del total de registros en la tabla
 let timeout = null // timeout para debounce y no buscar en cada key
-let selectOptions = ref([]) // options del autocomplete
+let searchResultsOptions = ref([]) // options del autocomplete
 
 const formValues = ref({
     id: "",
     nombre: "",
     descripcion: "",
-    cantidad: "",
+    cantidad: 0,
     ot: "",
     estatus: "",
     estado: "",
     responsable: "",
-    comentario: ""
+    comentario: "",
+    selFamilia: "",
+    selMaquina: "",
+    selParcial: "",
 })
+
+function onDeleteRow(row) {
+    dataTable.value = dataTable.value.filter((item) => item.id !== row.id);
+}
 
 watch(busquedaPadre, (newValue) => {
     clearTimeout(timeout)
@@ -49,22 +54,18 @@ async function obtenerDatosTabla(newValue) {
     }
 
     const responseData = await res.json()
-    selectOptions.value = []
-
+    searchResultsOptions.value = []
     responseData.results.map((item) => {
         /* Llenado de options para el autocomplete */
-        selectOptions.value.push({
+        searchResultsOptions.value.push({
             label: item.Nombre,
             value: {
                 id: item.id,
                 Nombre: item.Nombre,
                 Descripcion: item.Descripcion,
-                Cantidad: item.Cantidad,
-                Estatus: item.Estatus,
             }
         })
     })
-
 }
 
 /* NOTIFICACIONES */
@@ -86,53 +87,93 @@ function getForm(val) {
     formValues.value.cantidad = val.Cantidad
     formValues.value.estatus = val.Estatus
     formValues.value.estado = val.Estatus
-    formValues.value.comentario = val.Descripcion
+    formValues.value.comentario = val.comentario
+    formValues.value.selFamilia = val.selFamilia
+    formValues.value.selMaquina = val.selMaquina
+    formValues.value.selParcial = val.selParcial
 }
 
-
-// Variable para guardar las opciones del autocomplete
-const personal = ref([])
-
-// Para observar una propiedad específica de un objeto reactivo, 
-// se debe usar una función getter: () => formValues.value.responsable
 watch(() => formValues.value.responsable, (newValue) => {
-    console.log(newValue)
     if (newValue) {
         getPersonal(newValue)
     } else {
-        personal.value = [] // Limpiar si está vacío
+        valPersonal.value = []
     }
 })
 
 async function getPersonal(newValue) {
     const res = await fetch('http://localhost:3000/personal?q=' + newValue.toLowerCase())
     const responseData = await res.json()
-    console.log(responseData)
-
-    // Naive UI auto-complete espera un formato con 'label' y 'value'
-    personal.value = responseData.results.map(persona => ({
+    valPersonal.value = responseData.results.map(persona => ({
         label: persona.Nombre + ' (' + persona.Planta + ')',
         value: persona
     }))
 }
 
 const handleResponsableSelect = (val) => {
-    console.log('El responsable es:', val.Nombre)
-    // Aquí puedes asignar el valor completo (objeto) a tu formulario
     formValues.value.responsable = val.Nombre
 }
 
 
 function addToList() {
+    // Detectar si no han buscado una herramienta principal
+    if (!formValues.value.id || !formValues.value.nombre) {
+        message.error('Por favor busca y selecciona una herramienta primero')
+        return
+    }
+
+    //  Detectar si falta llenar algún campo usando un bucle
+    const camposObligatorios = [
+        { clave: 'cantidad', nombre: 'Cantidad' },
+        { clave: 'ot', nombre: 'OT / Orden' },
+        { clave: 'responsable', nombre: 'Responsable' }
+    ]
+
+    for (const campo of camposObligatorios) {
+        const valor = formValues.value[campo.clave]
+        // Comprobamos si no existe, si es texto vacío, o si es un número 0
+        if (!valor || (typeof valor === 'string' && valor.trim() === '') || valor === 0) {
+            message.error(`Falta llenar el campo: ${campo.nombre}`)
+            return // Detiene la función al primer campo vacío que encuentre
+        }
+    }
+
+    // Detectar si el ítem ya existe en la tabla usando su ID
+    const yaExiste = dataTable.value.some(item => item.id === formValues.value.id)
+    if (yaExiste) {
+        message.error('Ya existe en la lista')
+        return
+    }
+
     dataTable.value.push({
         id: formValues.value.id,
         Nombre: formValues.value.nombre,
         Descripcion: formValues.value.descripcion,
         Cantidad: formValues.value.cantidad,
         Estatus: formValues.value.estatus,
+        selFamilia: formValues.value.selFamilia,
+        selMaquina: formValues.value.selMaquina,
+        selParcial: formValues.value.selParcial,
+        Responsable: formValues.value.responsable,
+        comentario: formValues.value.comentario
     })
-
+    valTotalRegistros.value++
     message.success('Herramienta agregada a la lista')
+}
+
+function clearForm() {
+    formValues.value.id = ""
+    formValues.value.nombre = ""
+    formValues.value.descripcion = ""
+    formValues.value.cantidad = 0
+    formValues.value.ot = ""
+    formValues.value.estatus = ""
+    formValues.value.estado = ""
+    formValues.value.responsable = ""
+    formValues.value.comentario = ""
+    formValues.value.selFamilia = ""
+    formValues.value.selMaquina = ""
+    formValues.value.selParcial = ""
 }
 </script>
 
@@ -157,11 +198,9 @@ function addToList() {
                         <span class="card-title-mini">Buscar Herramienta</span>
                     </div>
                     <div class="search-box">
-                        <btnSearch v-model:busquedaHijo="busquedaPadre" :options="selectOptions" @select="handleSelect"
-                            @setForm="getForm" />
+                        <btnSearch v-model:busquedaHijo="busquedaPadre" :options="searchResultsOptions"
+                            @select="handleSelect" @setForm="getForm" />
                     </div>
-
-
                 </div>
 
                 <!-- FORMULARIO -->
@@ -178,10 +217,21 @@ function addToList() {
                             <n-input placeholder="..." :value="formValues.descripcion" />
                         </n-form-item>
                         <n-form-item label="Cantidad">
-                            <n-input-number placeholder="0" />
+                            <n-input-number placeholder="0" v-model:value="formValues.cantidad" />
                         </n-form-item>
                         <n-form-item label="OT / Orden">
-                            <n-input placeholder="# OT" />
+                            <n-input placeholder="# OT" v-model:value="formValues.ot" />
+                        </n-form-item>
+
+                        <n-divider dashed class="full-width" style="margin: 0;" />
+
+                        <n-form-item label="Familia">
+                            <n-select v-model:value="formValues.selFamilia" :options="selFamilia"
+                                placeholder="Seleccionar..." />
+                        </n-form-item>
+                        <n-form-item label="Máquina">
+                            <n-select v-model:value="formValues.selMaquina" :options="selMaquina"
+                                placeholder="Seleccionar..." />
                         </n-form-item>
                         <n-form-item label="Estatus">
                             <n-select v-model:value="valEstatus" :options="selEstados" placeholder="Seleccionar..." />
@@ -191,22 +241,22 @@ function addToList() {
                         </n-form-item>
                         <n-form-item label="Responsable" class="full-width">
                             <n-auto-complete placeholder="Escribe un nombre..." v-model:value="formValues.responsable"
-                                :options="personal" @select="handleResponsableSelect" />
+                                :options="valPersonal" @select="handleResponsableSelect" />
                         </n-form-item>
                         <n-form-item label="Comentario" class="full-width">
-                            <n-input type="textarea" placeholder="..." show-count :maxlength="100"
+                            <n-input placeholder="..." show-count :maxlength="100"
                                 v-model:value="formValues.comentario" />
                         </n-form-item>
                     </n-form>
                     <div class="form-actions">
-                        <n-button ghost @click="addToList" size="medium" style="flex: 1">
+                        <n-button ghost type="error" @click="clearForm" size="medium" style="flex: 1">
                             <template #icon>
-                                <ArrowRightToLine />
+                                <Eraser />
                             </template>
-                            Agregar a la lista
+                            Limpiar Formulario
                         </n-button>
 
-                        <n-button ghost @click="addToList" size="medium" style="flex: 1">
+                        <n-button type="info" ghost @click="addToList" size="medium" style="flex: 1">
                             <template #icon>
                                 <ArrowRightToLine />
                             </template>
@@ -233,7 +283,7 @@ function addToList() {
         <!-- FOOTER DE ACCIONES -->
         <div class="Contenedor-inferior">
             <div class="footer-info">
-                <span>Sesión actual: <strong>{{ dataTable.length }} artículos</strong></span>
+                <span>Sesión actual: <strong>{{ valTotalRegistros }} registros</strong></span>
             </div>
             <div class="footer-btns">
                 <n-button secondary @click="console.log('Limpiar')">Limpiar</n-button>
@@ -315,6 +365,7 @@ function addToList() {
     align-items: center;
     gap: 8px;
     margin-bottom: 10px;
+    flex-shrink: 0;
 }
 
 .step-dot {
@@ -344,6 +395,8 @@ function addToList() {
     align-content: start;
     flex: 1;
     min-height: 0;
+    overflow-y: auto;
+    padding-right: 4px;
 }
 
 
@@ -354,14 +407,12 @@ function addToList() {
 }
 
 .form-actions {
-    margin-top: auto;
-    /* Anclado al final del card */
-    padding-top: 10px;
+    margin-top: 12px;
+    flex-shrink: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 8px;
-    padding-top: 20px;
 }
 
 .Contenedor-derecho {

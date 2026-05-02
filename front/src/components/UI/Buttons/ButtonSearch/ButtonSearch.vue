@@ -46,6 +46,7 @@ const handleSelect = (val) => {
 :deep(.n-auto-complete .n-input) {
     height: 100%;
     background: transparent;
+    border: 1px solid var(--color-border-strong);
 }
 
 :deep(.n-auto-complete .n-input-wrapper) {
